@@ -18,13 +18,13 @@ import {
  */
 export const createTable = pgTableCreator((name) => `fragrance-logs_${name}`);
 
-export const posts = createTable(
+export const fragrances = createTable(
   "fragrance",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    brand: varchar("brand", { length: 256 }),
-    imageUrl: varchar("image_url", { length: 256 }),
+    name: varchar("name", { length: 256 }).notNull(),
+    house: varchar("house", { length: 256 }).notNull(),
+    imageUrl: varchar("image_url", { length: 256 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
