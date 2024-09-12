@@ -7,9 +7,9 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center">
+      <div className="flex h-full flex-col items-center justify-center">
         Work in progress
-      </main>
+      </div>
     </HydrateClient>
   );
 }

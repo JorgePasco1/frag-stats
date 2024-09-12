@@ -16,10 +16,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="bg-slate-700 text-slate-100">
+      <body className="bg-slate-700 text-slate-100 h-screen flex flex-col">
         <TRPCReactProvider>
           <NavBar />
-          {children}
+          <main className="flex-grow">{children}</main>
         </TRPCReactProvider>
       </body>
     </html>
@@ -28,7 +28,7 @@ export default function RootLayout({
 
 const NavBar = () => {
   return (
-    <nav className="flex flex-wrap items-center justify-between bg-slate-900 p-6">
+    <nav className="flex h-1/20 flex-wrap items-center justify-between bg-slate-900 p-6">
       {/* Home nav item */}
       <a href="/" className="text-white">
         Home
