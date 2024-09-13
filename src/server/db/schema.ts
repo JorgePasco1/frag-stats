@@ -18,13 +18,25 @@ import {
  */
 export const createTable = pgTableCreator((name) => `fragrance-logs_${name}`);
 
-export const fragrances = createTable(
-  "fragrance",
+export const fragrances = createTable("fragrance", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  house: varchar("house", { length: 256 }).notNull(),
+  imageUrl: varchar("image_url", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
+export const userFragrances = createTable(
+  "user_fragrance",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    house: varchar("house", { length: 256 }).notNull(),
-    imageUrl: varchar("image_url", { length: 256 }).notNull(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    fragranceId: serial("fragrance_id").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -32,7 +44,7 @@ export const fragrances = createTable(
       () => new Date(),
     ),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+  (table) => ({
+    userIdIndex: index("user_id_idx").on(table.userId),
   }),
 );
