@@ -1,4 +1,4 @@
-
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 export const NavBar = () => {
@@ -6,7 +6,14 @@ export const NavBar = () => {
     <nav className="h-1/20 text-l flex flex-wrap items-center justify-between bg-slate-900 p-6">
       {/* Home nav item */}
       <Link href="/">Home</Link>
-      <Link href="/login">Log in</Link>
+      <div>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
     </nav>
   );
 };

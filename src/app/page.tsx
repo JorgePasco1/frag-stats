@@ -1,8 +1,9 @@
+import { SignedOut, SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { db } from "~/server/db";
 import { HydrateClient } from "~/trpc/server";
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   return (
@@ -15,22 +16,12 @@ export default async function Home() {
 }
 
 const Fragrances = async () => {
-  const fragrances = await db.query.fragrances.findMany();
   return (
     <div>
-      {fragrances.map((fragrance) => (
-        <div key={fragrance.id}>
-          <div>
-            {fragrance.house} {fragrance.name}
-          </div>
-          <Image
-            src={fragrance.imageUrl}
-            alt={fragrance.name}
-            width={200}
-            height={200}
-          />
-        </div>
-      ))}
+      <SignedOut>
+        <div>Wecolme. To continue:</div>
+        <SignInButton/>
+      </SignedOut>
     </div>
   );
 };
