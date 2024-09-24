@@ -4,7 +4,12 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { ClerkProvider } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+} from "@clerk/nextjs";
 import { NavBar } from "./_components/NavBar";
 
 export const metadata: Metadata = {
@@ -22,12 +27,16 @@ export default function RootLayout({
         <body className="flex h-screen flex-col bg-slate-700 text-slate-100">
           <TRPCReactProvider>
             <NavBar />
-            <main className="flex-grow">{children}</main>
+            <div className="flex h-full flex-col items-center justify-center">
+              <SignedOut>
+                <div>To continue:</div>
+                <SignInButton />
+              </SignedOut>
+              <SignedIn>{children}</SignedIn>
+            </div>
           </TRPCReactProvider>
         </body>
       </html>
     </ClerkProvider>
   );
 }
-
-
