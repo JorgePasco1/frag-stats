@@ -5,6 +5,7 @@ export const HomeView = () => {
     <div className="flex flex-col gap-4 text-center">
       <div>Welcome! What do you want to do?</div>
       <Link href="/fragrances/add">Add new fragrance</Link>
+      <Link href="/fragrances/collection">View your fragrances</Link>
     </div>
   );
 };
