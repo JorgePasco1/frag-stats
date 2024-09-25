@@ -5,7 +5,11 @@ export const NavBar = () => {
   return (
     <nav className="h-1/20 text-l flex flex-wrap items-center justify-between bg-slate-900 p-6">
       {/* Home nav item */}
-      <Link href="/">Home</Link>
+      <div className="flex gap-8">
+        <Link href="/">Home</Link>
+        <Link href="/fragrances/add">Add</Link>
+        <Link href="/fragrances/collection">Collection</Link>
+      </div>
       <div>
         <SignedOut>
           <SignInButton />
