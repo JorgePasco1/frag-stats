@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ReloadIcon } from "@radix-ui/react-icons";
+
 import {
   Form,
   FormControl,
@@ -13,6 +15,8 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import { api } from "~/trpc/react";
+import { useRouter } from "next/navigation";
 
 export const AddFragranceForm = () => {
   const form = useForm<AddFragranceFormValues>({
@@ -24,14 +28,21 @@ export const AddFragranceForm = () => {
     },
   });
 
+  const router = useRouter();
+  const { mutate: submitForm, isPending } =
+    api.userFragrances.create.useMutation({
+      onSuccess: () => {
+        router.push("/fragrances/collection");
+      },
+    });
   const onSubmit = (values: AddFragranceFormValues) => {
-    console.log({ values });
+    submitForm(values);
   };
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 min-w-96"
+        className="flex min-w-96 flex-col gap-4"
       >
         <FormField
           control={form.control}
@@ -72,7 +83,10 @@ export const AddFragranceForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+          Submit
+        </Button>
       </form>
     </Form>
   );

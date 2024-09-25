@@ -1,6 +1,7 @@
 import { fragrances, userFragrances } from "~/server/db/schema";
 import { createTRPCRouter, privateProcedure } from "../trpc";
 import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 export const userFragrancesRouter = createTRPCRouter({
   getAll: privateProcedure.query(({ ctx }) => {
@@ -18,4 +19,30 @@ export const userFragrancesRouter = createTRPCRouter({
       .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
       .where(eq(userFragrances.userId, currentUserId));
   }),
+  create: privateProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        house: z.string(),
+        imageUrl: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { currentUserId } = ctx;
+      const { name, house, imageUrl } = input;
+      const fragranceInsertResult = await ctx.db
+        .insert(fragrances)
+        .values({
+          name,
+          house,
+          imageUrl,
+        })
+        .returning({ insertedId: fragrances.id });
+      const fragrance = fragranceInsertResult[0];
+      if (!fragrance) return;
+      await ctx.db.insert(userFragrances).values({
+        userId: currentUserId,
+        fragranceId: fragrance.insertedId,
+      });
+    }),
 });
