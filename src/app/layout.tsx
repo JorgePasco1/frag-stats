@@ -24,10 +24,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
-        <body className="flex h-screen flex-col bg-slate-700 text-slate-100">
+        <body className="flex min-h-screen flex-col bg-slate-700 text-slate-100">
           <TRPCReactProvider>
             <NavBar />
-            <div className="flex h-full flex-col items-center justify-center">
+            <div className="flex min-h-full flex-col items-center justify-center">
               <SignedOut>
                 <div>To continue:</div>
                 <SignInButton />
