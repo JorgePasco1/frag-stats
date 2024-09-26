@@ -9,6 +9,7 @@ export const NavBar = () => {
         <Link href="/">Home</Link>
         <Link href="/fragrances/add">New Fragrance</Link>
         <Link href="/fragrances/collection">Collection</Link>
+        <Link href="/logs">Logs</Link>
       </div>
       <div>
         <SignedOut>
