@@ -22,6 +22,7 @@ export const NewLogForm = () => {
       enjoyment: undefined,
       sprays: undefined,
       notes: undefined,
+      logDate: new Date(),
     },
   });
 

@@ -27,7 +27,7 @@ export const LogDatePicker = ({ form }: LogDatePickerProps) => {
       control={form.control}
       name="logDate"
       render={({ field }) => (
-        <FormItem className="flex flex-col">
+        <FormItem className="flex flex-col gap-1">
           <FormLabel>Log date</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
