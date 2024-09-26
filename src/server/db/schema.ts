@@ -5,6 +5,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
+  integer,
   pgEnum,
   pgTableCreator,
   serial,
@@ -66,5 +67,23 @@ export const userFragrances = createTable(
   (table) => ({
     userIdIndex: index("user_id_idx").on(table.userId),
     uniqueUserFragranceIndex: sql`UNIQUE(${table.userId}, ${table.fragranceId}, ${table.isDecant})`,
+  }),
+);
+
+export const userFragranceLogs = createTable(
+  "user_fragrance_log",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    fragranceId: serial("fragrance_id").notNull(),
+    logDate: timestamp("log_date", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    notes: varchar("notes", { length: 256 }),
+    enjoyment: integer("enjoyment"),
+    sprays: integer("sprays"),
+  },
+  (table) => ({
+    enjoymentRange: sql`CHECK (${table.enjoyment} BETWEEN 1 AND 10))`,
   }),
 );
