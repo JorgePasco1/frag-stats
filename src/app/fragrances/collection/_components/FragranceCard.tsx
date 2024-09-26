@@ -1,9 +1,5 @@
-import type { inferRouterOutputs } from "@trpc/server";
 import Image from "next/image";
-import type { AppRouter } from "~/server/api/root";
-
-type UserFragrance =
-  inferRouterOutputs<AppRouter>["userFragrances"]["getAll"][number];
+import type { UserFragrance } from "~/types/UserFragrance.types";
 
 type FragranceCardProps = {
   fragrance: UserFragrance;
