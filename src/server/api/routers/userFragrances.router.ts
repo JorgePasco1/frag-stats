@@ -14,6 +14,7 @@ export const userFragrancesRouter = createTRPCRouter({
         imageUrl: fragrances.imageUrl,
         createdAt: fragrances.createdAt,
         updatedAt: fragrances.updatedAt,
+        isDecant: userFragrances.isDecant,
       })
       .from(userFragrances)
       .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))

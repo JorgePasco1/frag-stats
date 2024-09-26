@@ -3,6 +3,7 @@
 
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   pgTableCreator,
   serial,
@@ -18,18 +19,24 @@ import {
  */
 export const createTable = pgTableCreator((name) => `fragrance-logs_${name}`);
 
-export const fragrances = createTable("fragrance", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  house: varchar("house", { length: 256 }).notNull(),
-  imageUrl: varchar("image_url", { length: 256 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-    () => new Date(),
-  ),
-});
+export const fragrances = createTable(
+  "fragrance",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    house: varchar("house", { length: 256 }).notNull(),
+    imageUrl: varchar("image_url", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+      () => new Date(),
+    ),
+  },
+  (table) => ({
+    uniqueNameHouseIndex: sql`UNIQUE(${table.name}, ${table.house})`,
+  }),
+);
 
 export const userFragrances = createTable(
   "user_fragrance",
@@ -43,8 +50,10 @@ export const userFragrances = createTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
       () => new Date(),
     ),
+    isDecant: boolean("is_decant").default(false).notNull(),
   },
   (table) => ({
     userIdIndex: index("user_id_idx").on(table.userId),
+    uniqueUserFragranceIndex: sql`UNIQUE(${table.userId}, ${table.fragranceId}, ${table.isDecant})`,
   }),
 );

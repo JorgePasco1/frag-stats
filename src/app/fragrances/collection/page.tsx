@@ -1,16 +1,43 @@
 import { api } from "~/trpc/server";
 import { FragranceCard } from "./_components/FragranceCard";
+import { TabsContent, Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 const YourCollectionPage = async () => {
   const userFragrances = await api.userFragrances.getAll();
+  const bottles = userFragrances.filter((fragrance) => !fragrance.isDecant);
+  const decants = userFragrances.filter((fragrance) => fragrance.isDecant);
   return (
-    <div className="flex min-h-full h-fit w-full flex-col items-center p-4 gap-6">
+    <div className="flex h-fit min-h-full w-full flex-col items-center gap-6 p-4">
       <h1 className="text-2xl font-bold">Your fragrances</h1>
-      <div className="flex gap-8 flex-wrap w-full justify-center">
-        {userFragrances.map((fragrance) => (
-          <FragranceCard key={fragrance.fragranceId} fragrance={fragrance} />
-        ))}
-      </div>
+      <Tabs
+        defaultValue="account"
+        className="flex w-full flex-col items-center gap-4"
+      >
+        <TabsList>
+          <TabsTrigger value="bottles">Bottles</TabsTrigger>
+          <TabsTrigger value="decants">Decants</TabsTrigger>
+        </TabsList>
+        <TabsContent value="bottles">
+          <div className="flex w-full flex-wrap justify-center gap-8">
+            {bottles.map((fragrance) => (
+              <FragranceCard
+                key={fragrance.fragranceId}
+                fragrance={fragrance}
+              />
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="decants">
+          <div className="flex w-full flex-wrap justify-center gap-8">
+            {decants.map((fragrance) => (
+              <FragranceCard
+                key={fragrance.fragranceId}
+                fragrance={fragrance}
+              />
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
