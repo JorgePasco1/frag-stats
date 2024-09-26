@@ -21,8 +21,12 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useMemo, useState } from "react";
+import { Checkbox } from "~/components/ui/checkbox";
 
 export const NewLogForm = () => {
+  const [isDecant, setIsDecant] = useState(false);
+
   const form = useForm<AddFragranceFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,13 +43,32 @@ export const NewLogForm = () => {
 
   const { data: userFragrances, isLoading } =
     api.userFragrances.getAll.useQuery();
-  console.log({ userFragrances });
+  const fragranceOptions = useMemo(() => {
+    if (!userFragrances) return [];
+    if (isDecant) {
+      return userFragrances.filter((frag) => frag.isDecant);
+    }
+    return userFragrances.filter((frag) => !frag.isDecant);
+  }, [userFragrances, isDecant]);
 
   if (isLoading) {
     return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
   }
   return (
     <Form {...form}>
+      <div className="flex items-center gap-2 text-sm">
+        <Checkbox
+          checked={isDecant}
+          id="isDecant"
+          onCheckedChange={(checked) => {
+            setIsDecant(Boolean(checked));
+          }}
+        />
+        <div className="grid gap-1.5 leading-none">
+          <label htmlFor="isDecant">Is Decant?</label>
+        </div>
+      </div>
+
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
@@ -60,7 +83,7 @@ export const NewLogForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {userFragrances?.map((frag) => {
+                  {fragranceOptions?.map((frag) => {
                     return (
                       <SelectItem
                         key={frag.fragranceId}
