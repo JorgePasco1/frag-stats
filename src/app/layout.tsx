@@ -11,6 +11,7 @@ import {
   SignInButton,
 } from "@clerk/nextjs";
 import { NavBar } from "./_components/NavBar";
+import { ThemeProvider } from "~/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Frag Stats",
@@ -26,14 +27,16 @@ export default function RootLayout({
       <html lang="en" className={`${GeistSans.variable}`}>
         <body className="flex min-h-screen flex-col bg-slate-700 text-slate-100">
           <TRPCReactProvider>
-            <NavBar />
-            <div className="flex min-h-full flex-col items-center justify-center">
-              <SignedOut>
-                <div>To continue:</div>
-                <SignInButton />
-              </SignedOut>
-              <SignedIn>{children}</SignedIn>
-            </div>
+            <ThemeProvider attribute="class" defaultTheme="dark">
+              <NavBar />
+              <div className="flex min-h-full flex-col items-center justify-center">
+                <SignedOut>
+                  <div>To continue:</div>
+                  <SignInButton />
+                </SignedOut>
+                <SignedIn>{children}</SignedIn>
+              </div>
+            </ThemeProvider>
           </TRPCReactProvider>
         </body>
       </html>
