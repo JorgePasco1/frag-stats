@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import type { UseFormReturn } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -16,11 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import type { AddFragranceFormValues } from "../NewLogForm";
 import type { UserFragrance } from "~/types/UserFragrance.types";
+import type { NewLogFormInstance } from "../NewLogForm.types";
 
 type FragranceSelectorProps = {
-  form: UseFormReturn<AddFragranceFormValues>;
+  form: NewLogFormInstance;
   userFragrances: UserFragrance[] | undefined;
   isDecant: boolean;
 };

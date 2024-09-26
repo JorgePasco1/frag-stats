@@ -10,7 +10,7 @@ import {} from "~/components/ui/select";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
-import { FragranceSelect } from "./inputs";
+import { FragranceSelect, LogDatePicker } from "./inputs";
 
 export const NewLogForm = () => {
   const [isDecant, setIsDecant] = useState(false);
@@ -49,12 +49,13 @@ export const NewLogForm = () => {
           <label htmlFor="isDecant">Is Decant?</label>
         </div>
       </div>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <FragranceSelect
           form={form}
           userFragrances={userFragrances}
           isDecant={isDecant}
         />
+        <LogDatePicker form={form} />
       </form>
     </Form>
   );
@@ -62,6 +63,7 @@ export const NewLogForm = () => {
 
 const formSchema = z.object({
   fragranceId: z.string(),
+  logDate: z.date(),
   enjoyment: z.number().int().min(1).max(10).optional(),
   sprays: z.number().int().min(1).optional(),
   notes: z.string(),
