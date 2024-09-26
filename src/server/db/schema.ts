@@ -5,6 +5,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
+  pgEnum,
   pgTableCreator,
   serial,
   timestamp,
@@ -38,6 +39,14 @@ export const fragrances = createTable(
   }),
 );
 
+export const statusEnum = pgEnum("status", ["have", "had"]);
+export const hadDetailsEnum = pgEnum("had_details", [
+  "emptied",
+  "sold",
+  "gifted",
+  "lost",
+]);
+
 export const userFragrances = createTable(
   "user_fragrance",
   {
@@ -51,6 +60,8 @@ export const userFragrances = createTable(
       () => new Date(),
     ),
     isDecant: boolean("is_decant").default(false).notNull(),
+    status: statusEnum("status").default("have").notNull(),
+    hadDetails: hadDetailsEnum("had_details"),
   },
   (table) => ({
     userIdIndex: index("user_id_idx").on(table.userId),
