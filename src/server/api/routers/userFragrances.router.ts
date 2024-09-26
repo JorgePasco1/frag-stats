@@ -26,11 +26,12 @@ export const userFragrancesRouter = createTRPCRouter({
         name: z.string(),
         house: z.string(),
         imageUrl: z.string(),
+        isDecant: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { currentUserId } = ctx;
-      const { name, house, imageUrl } = input;
+      const { name, house, imageUrl, isDecant } = input;
       const fragranceInsertResult = await ctx.db
         .insert(fragrances)
         .values({
@@ -44,6 +45,7 @@ export const userFragrancesRouter = createTRPCRouter({
       await ctx.db.insert(userFragrances).values({
         userId: currentUserId,
         fragranceId: fragrance.insertedId,
+        isDecant,
       });
     }),
 });

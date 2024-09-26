@@ -10,7 +10,7 @@ const YourCollectionPage = async () => {
     <div className="flex h-fit min-h-full w-full flex-col items-center gap-6 p-4">
       <h1 className="text-2xl font-bold">Your fragrances</h1>
       <Tabs
-        defaultValue="account"
+        defaultValue="bottles"
         className="flex w-full flex-col items-center gap-4"
       >
         <TabsList>
