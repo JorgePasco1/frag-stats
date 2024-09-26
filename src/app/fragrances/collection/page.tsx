@@ -1,6 +1,11 @@
 import { api } from "~/trpc/server";
 import { FragranceCard } from "./_components/FragranceCard";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 
 const YourCollectionPage = async () => {
   const userFragrances = await api.userFragrances.getAll();
@@ -20,10 +25,14 @@ const YourCollectionPage = async () => {
         <TabsContent value="bottles">
           <div className="flex w-full flex-wrap justify-center gap-8">
             {bottles.map((fragrance) => (
-              <FragranceCard
-                key={fragrance.fragranceId}
-                fragrance={fragrance}
-              />
+              <Popover key={fragrance.fragranceId}>
+                <PopoverTrigger>
+                  <FragranceCard fragrance={fragrance} />
+                </PopoverTrigger>
+                <PopoverContent side="top">
+                  Place content for the popover here.
+                </PopoverContent>
+              </Popover>
             ))}
           </div>
         </TabsContent>

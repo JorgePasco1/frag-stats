@@ -7,7 +7,7 @@ export const NavBar = () => {
       {/* Home nav item */}
       <div className="flex gap-8">
         <Link href="/">Home</Link>
-        <Link href="/fragrances/add">Add</Link>
+        <Link href="/fragrances/add">New Fragrance</Link>
         <Link href="/fragrances/collection">Collection</Link>
       </div>
       <div>
