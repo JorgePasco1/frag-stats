@@ -28,7 +28,11 @@ export const EnjoymentRating = ({ form }: EnjoymentRatingProps) => {
               onChange={onChange}
               visibleLabelId="rating_label"
               onBlur={onBlur}
-              // itemStyles={{itemShapes: RoundedStar}}
+              itemStyles={{
+                itemShapes: RoundedStar,
+                activeFillColor: "#f59e0b",
+                inactiveFillColor: "#ffedd5",
+              }}
             />
           </div>
         )}
