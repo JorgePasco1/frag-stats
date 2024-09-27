@@ -11,6 +11,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
 import { FragranceSelect, LogDatePicker } from "./inputs";
+import { EnjoymentRating } from "./inputs/EnjoymentRating";
 
 export const NewLogForm = () => {
   const [isDecant, setIsDecant] = useState(false);
@@ -57,6 +58,7 @@ export const NewLogForm = () => {
           isDecant={isDecant}
         />
         <LogDatePicker form={form} />
+        <EnjoymentRating form={form} />
       </form>
     </Form>
   );
