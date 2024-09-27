@@ -14,7 +14,12 @@ const LogsIndex = async () => {
       <h1 className="text-xl font-bold">Logs</h1>
       <NewLogModal />
       {Object.entries(logGroups).map(([date, logs], idx) => (
-        <LogGroup date={date} logs={logs} key={`group-${idx}`} />
+        <LogGroup
+          date={date}
+          logs={logs}
+          key={`group-${idx}`}
+          defaultOpen={idx === 0}
+        />
       ))}
     </div>
   );

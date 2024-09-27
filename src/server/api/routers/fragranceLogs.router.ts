@@ -5,7 +5,7 @@ import {
   userFragranceLogs,
   userFragrances,
 } from "~/server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export const userFragranceLogsRouter = createTRPCRouter({
   createUserFragranceLog: privateProcedure
@@ -44,8 +44,7 @@ export const userFragranceLogsRouter = createTRPCRouter({
       .select({
         id: userFragranceLogs.id,
         logDate: userFragranceLogs.logDate,
-        fragranceName: fragrances.name,
-        fragranceHouse: fragrances.house,
+        fragranceFullName: sql<string>`${fragrances.house} || ' ' || ${fragrances.name}`,
       })
       .from(userFragranceLogs)
       .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
