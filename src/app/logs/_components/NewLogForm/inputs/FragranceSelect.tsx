@@ -44,7 +44,12 @@ export const FragranceSelect = ({
       render={({ field }) => (
         <FormItem>
           <FormLabel>Fragrance</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={(value) => {
+              field.onChange(+value);
+            }}
+            defaultValue={String(field.value)}
+          >
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder="Select one" />

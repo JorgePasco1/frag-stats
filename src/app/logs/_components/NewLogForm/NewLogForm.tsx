@@ -16,7 +16,11 @@ import { SpraysInput } from "./inputs/SpraysInput";
 import { NotesInput } from "./inputs/NotesInput";
 import { Button } from "~/components/ui/button";
 
-export const NewLogForm = () => {
+type NewLogFormProps = {
+  closeModal: () => void;
+};
+
+export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
   const [isDecant, setIsDecant] = useState(false);
 
   const form = useForm<AddFragranceFormValues>({
@@ -29,10 +33,16 @@ export const NewLogForm = () => {
       logDate: new Date(),
     },
   });
-  console.log({errors: form.formState.errors})
+
+  const { mutate: createUserFragranceLog, isPending: isSubmissionLoading } =
+    api.userFragranceLogs.createUserFragranceLog.useMutation({
+      onSuccess: () => {
+        closeModal();
+      },
+    });
 
   const onSubmit = (values: AddFragranceFormValues) => {
-    console.log({ values });
+    createUserFragranceLog(values);
   };
 
   const { data: userFragrances, isLoading } =
@@ -55,7 +65,10 @@ export const NewLogForm = () => {
           <label htmlFor="isDecant">Is Decant?</label>
         </div>
       </div>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
         <FragranceSelect
           form={form}
           userFragrances={userFragrances}
@@ -63,16 +76,21 @@ export const NewLogForm = () => {
         />
         <LogDatePicker form={form} />
         <EnjoymentRating form={form} />
-        <SpraysInput form={form}/>
-        <NotesInput form={form}/>
-        <Button type="submit">Save</Button>
+        <SpraysInput form={form} />
+        <NotesInput form={form} />
+        <Button type="submit">
+          {isSubmissionLoading && (
+            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+          )}
+          Save
+        </Button>
       </form>
     </Form>
   );
 };
 
 const formSchema = z.object({
-  fragranceId: z.string(),
+  fragranceId: z.number(),
   logDate: z.date(),
   enjoyment: z.number().int().min(1).max(10).optional(),
   sprays: z.number().int().min(1).optional(),

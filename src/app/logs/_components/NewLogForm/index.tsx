@@ -1,1 +1,1 @@
-export {NewLogForm} from './NewLogForm'
+export { NewLogForm } from "./NewLogForm";
