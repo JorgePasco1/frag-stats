@@ -26,10 +26,6 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
   const form = useForm<AddFragranceFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fragranceId: undefined,
-      enjoyment: undefined,
-      sprays: undefined,
-      notes: undefined,
       logDate: new Date(),
     },
   });

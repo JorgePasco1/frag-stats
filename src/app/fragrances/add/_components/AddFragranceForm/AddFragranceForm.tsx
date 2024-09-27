@@ -22,11 +22,6 @@ import { Checkbox } from "~/components/ui/checkbox";
 export const AddFragranceForm = () => {
   const form = useForm<AddFragranceFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: undefined,
-      house: undefined,
-      imageUrl: undefined,
-    },
   });
 
   const router = useRouter();
