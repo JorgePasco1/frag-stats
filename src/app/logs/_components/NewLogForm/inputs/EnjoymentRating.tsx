@@ -21,7 +21,7 @@ export const EnjoymentRating = ({ form }: EnjoymentRatingProps) => {
           validate: (rating) => (!rating ? true : rating > 0),
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <div className="h-8 w-28">
+          <div className="h-8 w-3/5">
             <Rating
               value={value ?? 0}
               isRequired
@@ -33,6 +33,7 @@ export const EnjoymentRating = ({ form }: EnjoymentRatingProps) => {
                 activeFillColor: "#f59e0b",
                 inactiveFillColor: "#ffedd5",
               }}
+              items={10}
             />
           </div>
         )}
