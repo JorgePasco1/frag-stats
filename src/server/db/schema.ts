@@ -85,5 +85,6 @@ export const userFragranceLogs = createTable(
   },
   (table) => ({
     enjoymentRange: sql`CHECK (${table.enjoyment} BETWEEN 1 AND 10))`,
+    userIdIndex: index("fragrance_log_user_id_idx").on(table.userId),
   }),
 );

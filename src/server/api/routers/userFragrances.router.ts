@@ -5,8 +5,8 @@ import { z } from "zod";
 
 export const userFragrancesRouter = createTRPCRouter({
   getAll: privateProcedure.query(({ ctx }) => {
-    const { currentUserId } = ctx;
-    return ctx.db
+    const { currentUserId, db } = ctx;
+    return db
       .select({
         fragranceId: userFragrances.fragranceId,
         name: fragrances.name,
@@ -16,7 +16,6 @@ export const userFragrancesRouter = createTRPCRouter({
         updatedAt: fragrances.updatedAt,
         isDecant: userFragrances.isDecant,
         status: userFragrances.status,
-        hadDetails: userFragrances.hadDetails,
       })
       .from(userFragrances)
       .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
@@ -32,9 +31,9 @@ export const userFragrancesRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { currentUserId } = ctx;
+      const { currentUserId, db } = ctx;
       const { name, house, imageUrl, isDecant } = input;
-      const fragranceInsertResult = await ctx.db
+      const fragranceInsertResult = await db
         .insert(fragrances)
         .values({
           name,

@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "../trpc";
-import { userFragranceLogs } from "~/server/db/schema";
+import {
+  fragrances,
+  userFragranceLogs,
+  userFragrances,
+} from "~/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export const userFragranceLogsRouter = createTRPCRouter({
   createUserFragranceLog: privateProcedure
@@ -33,4 +38,17 @@ export const userFragranceLogsRouter = createTRPCRouter({
         enjoyment,
       });
     }),
+  getAllUserFragranceLogs: privateProcedure.query(({ ctx }) => {
+    const { currentUserId, db } = ctx;
+    return db
+      .select({
+        id: userFragranceLogs.id,
+        logDate: userFragranceLogs.logDate,
+        fragranceName: fragrances.name,
+        fragranceHouse: fragrances.house,
+      })
+      .from(userFragranceLogs)
+      .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
+      .where(eq(userFragranceLogs.userId, currentUserId));
+  }),
 });
