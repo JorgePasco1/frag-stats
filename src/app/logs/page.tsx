@@ -28,7 +28,7 @@ const LogsIndex = () => {
           setIsModalOpen(isOpen);
         }}
       >
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button>Add new</Button>
         </DialogTrigger>
         <DialogContent>
