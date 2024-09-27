@@ -3,7 +3,6 @@ import { createTRPCRouter, privateProcedure } from "../trpc";
 import {
   fragrances,
   userFragranceLogs,
-  userFragrances,
 } from "~/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 

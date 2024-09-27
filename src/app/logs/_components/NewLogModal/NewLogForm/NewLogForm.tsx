@@ -6,7 +6,6 @@ import { z } from "zod";
 import { Form } from "~/components/ui/form";
 
 import { api } from "~/trpc/react";
-import {} from "~/components/ui/select";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
@@ -15,6 +14,7 @@ import { EnjoymentRating } from "./inputs/EnjoymentRating";
 import { SpraysInput } from "./inputs/SpraysInput";
 import { NotesInput } from "./inputs/NotesInput";
 import { Button } from "~/components/ui/button";
+import { useRouter } from "next/navigation";
 
 type NewLogFormProps = {
   closeModal: () => void;
@@ -30,10 +30,12 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
     },
   });
 
+  const router = useRouter();
   const { mutate: createUserFragranceLog, isPending: isSubmissionLoading } =
     api.userFragranceLogs.createUserFragranceLog.useMutation({
       onSuccess: () => {
         closeModal();
+        router.refresh();
       },
     });
 

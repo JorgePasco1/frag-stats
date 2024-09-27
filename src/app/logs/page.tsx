@@ -8,12 +8,15 @@ const LogsIndex = async () => {
   const userFragranceLogs =
     await api.userFragranceLogs.getAllUserFragranceLogs();
   const logGroups = groupLogsByDate(userFragranceLogs);
+  const sortedLogGroups = Object.entries(logGroups).sort(
+    ([a], [b]) => new Date(b).getTime() - new Date(a).getTime(),
+  );
 
   return (
     <div className="flex flex-col items-center gap-4 pb-4 pt-4">
       <h1 className="text-xl font-bold">Logs</h1>
       <NewLogModal />
-      {Object.entries(logGroups).map(([date, logs], idx) => (
+      {sortedLogGroups.map(([date, logs], idx) => (
         <LogGroup
           date={date}
           logs={logs}

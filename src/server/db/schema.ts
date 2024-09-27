@@ -82,6 +82,7 @@ export const userFragranceLogs = createTable(
     notes: varchar("notes", { length: 256 }),
     enjoyment: integer("enjoyment"),
     sprays: integer("sprays"),
+    duration: integer("duration"),
   },
   (table) => ({
     enjoymentRange: sql`CHECK (${table.enjoyment} BETWEEN 1 AND 10))`,
