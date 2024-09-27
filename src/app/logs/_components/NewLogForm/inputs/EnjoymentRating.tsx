@@ -12,7 +12,7 @@ type EnjoymentRatingProps = {
 export const EnjoymentRating = ({ form }: EnjoymentRatingProps) => {
   const { control } = form;
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <Label id="rating_label">Rating</Label>
       <Controller
         control={control}

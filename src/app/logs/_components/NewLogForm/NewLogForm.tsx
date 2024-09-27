@@ -12,6 +12,9 @@ import { useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
 import { FragranceSelect, LogDatePicker } from "./inputs";
 import { EnjoymentRating } from "./inputs/EnjoymentRating";
+import { SpraysInput } from "./inputs/SpraysInput";
+import { NotesInput } from "./inputs/NotesInput";
+import { Button } from "~/components/ui/button";
 
 export const NewLogForm = () => {
   const [isDecant, setIsDecant] = useState(false);
@@ -26,6 +29,7 @@ export const NewLogForm = () => {
       logDate: new Date(),
     },
   });
+  console.log({errors: form.formState.errors})
 
   const onSubmit = (values: AddFragranceFormValues) => {
     console.log({ values });
@@ -59,6 +63,9 @@ export const NewLogForm = () => {
         />
         <LogDatePicker form={form} />
         <EnjoymentRating form={form} />
+        <SpraysInput form={form}/>
+        <NotesInput form={form}/>
+        <Button type="submit">Save</Button>
       </form>
     </Form>
   );
@@ -69,7 +76,7 @@ const formSchema = z.object({
   logDate: z.date(),
   enjoyment: z.number().int().min(1).max(10).optional(),
   sprays: z.number().int().min(1).optional(),
-  notes: z.string(),
+  notes: z.string().optional(),
 });
 
 export type AddFragranceFormValues = z.infer<typeof formSchema>;
