@@ -9,6 +9,7 @@ import {
   pgEnum,
   pgTableCreator,
   serial,
+  text,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -79,7 +80,7 @@ export const userFragranceLogs = createTable(
     logDate: timestamp("log_date", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    notes: varchar("notes", { length: 256 }),
+    notes: text("notes"),
     enjoyment: integer("enjoyment"),
     sprays: integer("sprays"),
     duration: integer("duration"),

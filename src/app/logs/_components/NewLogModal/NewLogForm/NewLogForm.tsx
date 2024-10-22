@@ -15,6 +15,7 @@ import { SpraysInput } from "./inputs/SpraysInput";
 import { NotesInput } from "./inputs/NotesInput";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
+import { DurationInput } from "./inputs/DurationInput";
 
 type NewLogFormProps = {
   closeModal: () => void;
@@ -75,6 +76,7 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
         <LogDatePicker form={form} />
         <EnjoymentRating form={form} />
         <SpraysInput form={form} />
+        <DurationInput form={form} />
         <NotesInput form={form} />
         <Button type="submit">
           {isSubmissionLoading && (
@@ -93,6 +95,7 @@ const formSchema = z.object({
   enjoyment: z.number().int().min(1).max(10).optional(),
   sprays: z.number().int().min(1).optional(),
   notes: z.string().optional(),
+  duration: z.number().int().optional(),
 });
 
 export type AddFragranceFormValues = z.infer<typeof formSchema>;

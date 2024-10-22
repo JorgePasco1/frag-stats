@@ -1,9 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "../trpc";
-import {
-  fragrances,
-  userFragranceLogs,
-} from "~/server/db/schema";
+import { fragrances, userFragranceLogs } from "~/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 
 export const userFragranceLogsRouter = createTRPCRouter({
@@ -15,19 +12,13 @@ export const userFragranceLogsRouter = createTRPCRouter({
         notes: z.string().optional(),
         sprays: z.number().int().min(1).optional(),
         enjoyment: z.number().int().min(1).max(10).optional(),
+        duration: z.number().int().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { currentUserId } = ctx;
-      const { fragranceId, logDate, notes, sprays, enjoyment } = input;
-      console.log({
-        userId: currentUserId,
-        fragranceId,
-        logDate,
-        notes,
-        sprays,
-        enjoyment,
-      });
+      const { fragranceId, logDate, notes, sprays, enjoyment, duration } =
+        input;
       return await ctx.db.insert(userFragranceLogs).values({
         userId: currentUserId,
         fragranceId,
@@ -35,6 +26,7 @@ export const userFragranceLogsRouter = createTRPCRouter({
         notes,
         sprays,
         enjoyment,
+        duration,
       });
     }),
   getAllUserFragranceLogs: privateProcedure.query(({ ctx }) => {
