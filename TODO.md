@@ -1,10 +1,23 @@
 # TODO
 
+## Logs
+
 - [x] Rate the fragrance (by log)
-- [ ] Add graphs for use over time
-- [ ] Add graphs for enjoyment over time
+- [ ] Adding notes I like dislike
+- [ ] Add occassion(casual, formal, ...)
+- [ ] Add a state to save the time when starting a log, so it's easier to track the duration
+
+## Fragrance Cards
+
+- [ ] Add average rating to the fragrance cards
+
+## Graphs
+
+- [ ] Yse over time
+- [ ] Enjoyment over time
+
+## Misc
+
 - [ ] Add a loader for a json file with the data scrapped from fragrantica
 - [ ] Summary of a brand by AI based on all reviews
-- [ ] Adding notes I like dislike to logs
-- [ ] Add occassion to the log (casual, formal, ...)
 - [ ] Separate fragrance addition from user fragrance addition
