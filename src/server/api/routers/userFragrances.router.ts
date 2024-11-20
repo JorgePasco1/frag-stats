@@ -1,6 +1,10 @@
-import { fragrances, userFragrances } from "~/server/db/schema";
+import {
+  fragrances,
+  userFragranceLogs,
+  userFragrances,
+} from "~/server/db/schema";
 import { createTRPCRouter, privateProcedure } from "../trpc";
-import { eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const userFragrancesRouter = createTRPCRouter({
@@ -16,10 +20,28 @@ export const userFragrancesRouter = createTRPCRouter({
         updatedAt: fragrances.updatedAt,
         isDecant: userFragrances.isDecant,
         status: userFragrances.status,
+        averageRating: sql<number>`COALESCE(CAST(AVG(${userFragranceLogs.enjoyment}) AS FLOAT), 0)`,
       })
       .from(userFragrances)
       .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
-      .where(eq(userFragrances.userId, currentUserId));
+      .leftJoin(
+        userFragranceLogs,
+        and(
+          eq(userFragranceLogs.fragranceId, userFragrances.fragranceId),
+          eq(userFragranceLogs.userId, currentUserId),
+        ),
+      )
+      .where(eq(userFragrances.userId, currentUserId))
+      .groupBy(
+        userFragrances.fragranceId,
+        fragrances.name,
+        fragrances.house,
+        fragrances.imageUrl,
+        userFragrances.createdAt,
+        fragrances.updatedAt,
+        userFragrances.isDecant,
+        userFragrances.status,
+      );
   }),
   create: privateProcedure
     .input(
