@@ -20,6 +20,7 @@
 
 - [ ] Use over time
 - [ ] Enjoyment over time
+- [ ] Decants: first use to last use
 
 ## Misc
 

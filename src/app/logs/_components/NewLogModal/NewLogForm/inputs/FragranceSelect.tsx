@@ -31,10 +31,14 @@ export const FragranceSelect = ({
 }: FragranceSelectorProps) => {
   const fragranceOptions = useMemo(() => {
     if (!userFragrances) return [];
-    if (isDecant) {
-      return userFragrances.filter((frag) => frag.isDecant);
+    const sortedFragrances = userFragrances.sort((a, b) => {
+      return a.house.localeCompare(b.house);
     }
-    return userFragrances.filter((frag) => !frag.isDecant);
+    );
+    if (isDecant) {
+      return sortedFragrances.filter((frag) => frag.isDecant);
+    }
+    return sortedFragrances.filter((frag) => !frag.isDecant);
   }, [userFragrances, isDecant]);
 
   return (
