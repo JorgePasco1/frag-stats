@@ -10,7 +10,7 @@
 - [ ] Click to see/edit a log
 - [ ] Add expand all button
 - [ ] Add first impressions log for scents I do not own
-- [ ] Add bloater testing
+- [ ] Add blotter testing
 
 ## Fragrance Cards
 

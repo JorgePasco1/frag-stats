@@ -16,6 +16,7 @@ import { NotesInput } from "./inputs/NotesInput";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { DurationInput } from "./inputs/DurationInput";
+import { BlotterCheckbox } from "./inputs/BlotterCheckbox";
 
 type NewLogFormProps = {
   closeModal: () => void;
@@ -30,6 +31,7 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
       logDate: new Date(),
     },
   });
+  const testedInBlotter = form.watch("testedInBlotter");
 
   const router = useRouter();
   const { mutate: createUserFragranceLog, isPending: isSubmissionLoading } =
@@ -64,10 +66,12 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
           <label htmlFor="isDecant">Is Decant?</label>
         </div>
       </div>
+
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
+        <BlotterCheckbox form={form} />
         <FragranceSelect
           form={form}
           userFragrances={userFragrances}
@@ -75,8 +79,12 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
         />
         <LogDatePicker form={form} />
         <EnjoymentRating form={form} />
-        <SpraysInput form={form} />
-        <DurationInput form={form} />
+        {!testedInBlotter && (
+          <>
+            <SpraysInput form={form} />
+            <DurationInput form={form} />
+          </>
+        )}
         <NotesInput form={form} />
         <Button type="submit">
           {isSubmissionLoading && (
@@ -96,6 +104,7 @@ const formSchema = z.object({
   sprays: z.number().int().min(1).optional(),
   notes: z.string().optional(),
   duration: z.number().int().optional(),
+  testedInBlotter: z.boolean().optional(),
 });
 
 export type AddFragranceFormValues = z.infer<typeof formSchema>;
