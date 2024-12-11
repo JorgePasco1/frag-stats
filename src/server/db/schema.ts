@@ -84,6 +84,7 @@ export const userFragranceLogs = createTable(
     enjoyment: integer("enjoyment"),
     sprays: integer("sprays"),
     duration: integer("duration"),
+    testedInBlotter: boolean("tested_in_blotter").default(false).notNull(),
   },
   (table) => ({
     enjoymentRange: sql`CHECK (${table.enjoyment} BETWEEN 1 AND 10))`,

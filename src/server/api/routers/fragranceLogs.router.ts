@@ -13,11 +13,12 @@ export const userFragranceLogsRouter = createTRPCRouter({
         sprays: z.number().int().min(1).optional(),
         enjoyment: z.number().int().min(1).max(10).optional(),
         duration: z.number().int().optional(),
+        testedInBlotter: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { currentUserId } = ctx;
-      const { fragranceId, logDate, notes, sprays, enjoyment, duration } =
+      const { fragranceId, logDate, notes, sprays, enjoyment, duration, testedInBlotter} =
         input;
       return await ctx.db.insert(userFragranceLogs).values({
         userId: currentUserId,
@@ -27,6 +28,7 @@ export const userFragranceLogsRouter = createTRPCRouter({
         sprays,
         enjoyment,
         duration,
+        testedInBlotter,
       });
     }),
   getAllUserFragranceLogs: privateProcedure.query(({ ctx }) => {
