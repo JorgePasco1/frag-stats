@@ -11,6 +11,7 @@
 - [ ] Add expand all button
 - [ ] Add first impressions log for scents I do not own
 - [ ] Add blotter testing
+- [ ] Add bottle size to collection (bottles and decants)
 
 ## Fragrance Cards
 

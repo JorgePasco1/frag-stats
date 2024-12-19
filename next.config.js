@@ -7,7 +7,12 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: ["fimgs.net", "scentlover.shop", "utfs.io"],
+    domains: [
+      "fimgs.net",
+      "scentlover.shop",
+      "utfs.io",
+      "mauriciocarbajal.com",
+    ],
   },
 };
 
