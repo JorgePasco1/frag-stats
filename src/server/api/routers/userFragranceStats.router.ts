@@ -1,4 +1,4 @@
-import { userFragranceLogs } from "~/server/db/schema";
+import { fragrances, userFragranceLogs } from "~/server/db/schema";
 import { createTRPCRouter, privateProcedure } from "../trpc";
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
@@ -10,10 +10,26 @@ export const userFragranceStatsRouter = createTRPCRouter({
         fragranceId: z.number(),
       }),
     )
-    .query(({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       const { currentUserId, db } = ctx;
       const { fragranceId } = input;
-      return db
+
+      // Fragrance house and name
+      const fragrance = (
+        await db
+          .select({
+            house: fragrances.house,
+            name: fragrances.name,
+          })
+          .from(fragrances)
+          .where(eq(fragrances.id, fragranceId))
+          .limit(1)
+      )[0];
+      if (!fragrance) {
+        throw new Error("Fragrance not found");
+      }
+
+      const userFragranceStats = await db
         .select({
           enjoyment: userFragranceLogs.enjoyment,
           logDate: userFragranceLogs.logDate,
@@ -25,5 +41,10 @@ export const userFragranceStatsRouter = createTRPCRouter({
             eq(userFragranceLogs.fragranceId, fragranceId),
           ),
         );
+
+      return {
+        fragrance,
+        userFragranceStats,
+      };
     }),
 });

@@ -24,11 +24,16 @@ const FragranceStatsPage = ({
   params: { fragranceId: string };
 }) => {
   const { fragranceId } = params;
-  const { data: userFragranceStats, isLoading } =
+  const { data, isLoading } =
     api.userFragranceStats.getUserFragranceStats.useQuery({
       fragranceId: parseInt(fragranceId),
     });
-  console.log({ userFragranceStats });
+  console.log({ data });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!data) return <div>No data</div>;
+
+  const { fragrance } = data;
   const chartData = [
     { month: "January", desktop: 186, mobile: 80 },
     { month: "February", desktop: 305, mobile: 200 },
@@ -40,7 +45,9 @@ const FragranceStatsPage = ({
 
   return (
     <div>
-      <div>{fragranceId}</div>
+      <div>
+        {fragrance.house} - {fragrance.name}
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>Line Chart - Dots</CardTitle>
