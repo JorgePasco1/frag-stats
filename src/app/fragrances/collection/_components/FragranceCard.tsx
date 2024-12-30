@@ -6,10 +6,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import Link from "next/link";
 
 type FragranceCardProps = {
   fragrance: UserFragrance;
@@ -22,7 +21,11 @@ export const FragranceCard = ({ fragrance }: FragranceCardProps) => {
         <CardComponent fragrance={fragrance} />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top">
-        <DropdownMenuItem>Details</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/fragrances/${fragrance.fragranceId}`}>
+            View details
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
