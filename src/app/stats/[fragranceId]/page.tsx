@@ -1,6 +1,4 @@
-import Link from "next/link";
-
-const FragranceDetailsPage = ({
+const FragranceStatsPage = ({
   params,
 }: {
   params: { fragranceId: string };
@@ -9,9 +7,9 @@ const FragranceDetailsPage = ({
   return (
     <div>
       <div>{fragranceId}</div>
-      <Link href={`/stats/${fragranceId}/`}>Your stats</Link>
+      <h1>Stats here</h1>
     </div>
   );
 };
 
-export default FragranceDetailsPage;
+export default FragranceStatsPage;
