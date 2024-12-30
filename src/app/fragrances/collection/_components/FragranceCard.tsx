@@ -26,6 +26,11 @@ export const FragranceCard = ({ fragrance }: FragranceCardProps) => {
             View details
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/stats/${fragrance.fragranceId}`}>
+            View Stats
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
