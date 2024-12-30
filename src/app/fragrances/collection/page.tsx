@@ -28,14 +28,10 @@ const YourCollectionPage = async () => {
         <TabsContent value="bottles">
           <div className="flex w-full flex-wrap justify-center gap-8">
             {bottles.map((fragrance) => (
-              <Popover key={fragrance.fragranceId}>
-                <PopoverTrigger>
-                  <FragranceCard fragrance={fragrance} />
-                </PopoverTrigger>
-                <PopoverContent side="top">
-                  Place content for the popover here.
-                </PopoverContent>
-              </Popover>
+              <FragranceCard
+                fragrance={fragrance}
+                key={fragrance.fragranceId}
+              />
             ))}
           </div>
         </TabsContent>
