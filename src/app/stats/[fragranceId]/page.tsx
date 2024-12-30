@@ -1,11 +1,9 @@
 "use client";
 
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
@@ -33,15 +31,19 @@ const FragranceStatsPage = ({
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data</div>;
 
-  const { fragrance } = data;
-  const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-  ];
+  const { fragrance, userFragranceStats } = data;
+  const chartData = userFragranceStats.map((log) => ({
+    date: new Date(log.logDate)
+      .toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .replace(/\//g, "/"),
+    enjoyment: log.enjoyment,
+  }));
+  console.log({ chartData });
+
 
   return (
     <div>
@@ -50,8 +52,7 @@ const FragranceStatsPage = ({
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Line Chart - Dots</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardTitle>Enjoyment over time</CardTitle>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
@@ -59,24 +60,24 @@ const FragranceStatsPage = ({
               accessibilityLayer
               data={chartData}
               margin={{
+                top: 20,
                 left: 12,
                 right: 12,
               }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="month"
+                dataKey="date"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                // tickFormatter={(value) => value.slice(0, 3)}
               />
               <ChartTooltip
                 cursor={false}
-                content={<ChartTooltipContent hideLabel />}
+                content={<ChartTooltipContent indicator="line" />}
               />
               <Line
-                dataKey="desktop"
+                dataKey="enjoyment"
                 type="natural"
                 stroke="var(--color-desktop)"
                 strokeWidth={2}
@@ -86,18 +87,18 @@ const FragranceStatsPage = ({
                 activeDot={{
                   r: 6,
                 }}
-              />
+              >
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Line>
             </LineChart>
           </ChartContainer>
         </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm">
-          <div className="flex gap-2 font-medium leading-none">
-            Trending up by 5.2% this month
-          </div>
-          <div className="leading-none text-muted-foreground">
-            Showing total visitors for the last 6 months
-          </div>
-        </CardFooter>
+
       </Card>
     </div>
   );
