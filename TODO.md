@@ -3,7 +3,7 @@
 ## Logs
 
 - [x] Rate the fragrance (by log)
-- [ ] Adding notes I like dislike
+- [ ] Adding notes I like/dislike
 - [ ] Add occassion(casual, formal, ...)
 - [x] Add a state to save the time when starting a log, so it's easier to track the duration
 - [ ] Change the log date to be only date, and add an added date field that is datetime
@@ -12,6 +12,7 @@
 - [ ] Add first impressions log for scents I do not own
 - [ ] Add blotter testing
 - [ ] Add bottle size to collection (bottles and decants)
+- [ ] Replace dropdown with Combobox
 
 ## Fragrance Cards
 

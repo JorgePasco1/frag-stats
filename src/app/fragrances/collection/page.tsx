@@ -1,11 +1,6 @@
 import { api } from "~/trpc/server";
 import { FragranceCard } from "./_components/FragranceCard";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/ui/popover";
 
 const YourCollectionPage = async () => {
   const userFragrances = await api.userFragrances.getAll();
