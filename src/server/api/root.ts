@@ -1,6 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { userFragrancesRouter } from "./routers/userFragrances.router";
 import { userFragranceLogsRouter } from "./routers/fragranceLogs.router";
+import { userFragranceStatsRouter } from "./routers/userFragranceStats.router";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { userFragranceLogsRouter } from "./routers/fragranceLogs.router";
 export const appRouter = createTRPCRouter({
   userFragrances: userFragrancesRouter,
   userFragranceLogs: userFragranceLogsRouter,
+  userFragranceStats: userFragranceStatsRouter,
 });
 
 // export type definition of API
