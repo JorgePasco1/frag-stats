@@ -46,15 +46,15 @@ const FragranceStatsPage = ({
 
 
   return (
-    <div>
-      <div>
+    <div className="w-full p-8">
+      <div className="text-2xl font-bold mb-4 text-center">
         {fragrance.house} - {fragrance.name}
       </div>
-      <Card>
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Enjoyment over time</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="w-full">
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
@@ -98,7 +98,6 @@ const FragranceStatsPage = ({
             </LineChart>
           </ChartContainer>
         </CardContent>
-
       </Card>
     </div>
   );
