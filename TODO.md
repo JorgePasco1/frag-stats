@@ -13,7 +13,7 @@
 - [ ] Add blotter testing
 - [ ] Add bottle size to collection (bottles and decants)
 - [ ] Replace dropdown with Combobox
-- [ ] Make cards different color for bottles and decants
+- [ ] Make cards different color for bottles and decants.
 
 ## Fragrance Cards
 
