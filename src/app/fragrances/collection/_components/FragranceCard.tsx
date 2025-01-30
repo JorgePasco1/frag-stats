@@ -60,6 +60,7 @@ export const CardComponent = ({ fragrance }: FragranceCardProps) => {
             <div className="mt-[3px]">{averageRatingText}</div>
           </div>
         </div>
+        <p>Last used on {new Date(fragrance.lastUsed).toLocaleDateString()}</p>
         <p>Added on {new Date(fragrance.createdAt).toLocaleDateString()}</p>
       </div>
     </div>

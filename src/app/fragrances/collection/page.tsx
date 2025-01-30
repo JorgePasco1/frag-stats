@@ -4,6 +4,7 @@ import { TabsContent, Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
 const YourCollectionPage = async () => {
   const userFragrances = await api.userFragrances.getAll();
+  console.log({userFragrances})
   const orderedFragrances = userFragrances.sort((a, b) =>
     a.house.localeCompare(b.house),
   );
