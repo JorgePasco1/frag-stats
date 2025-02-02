@@ -1,6 +1,7 @@
 import { api } from "~/trpc/server";
 import { FragranceCard } from "./_components/FragranceCard";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { SortBy } from "./_components/SortBy";
 
 const YourCollectionPage = async ({
   searchParams,
@@ -15,8 +16,9 @@ const YourCollectionPage = async ({
     ) {
       return searchParams.sort;
     }
-    return undefined;
+    return "name";
   };
+
 
   const userFragrances = await api.userFragrances.getAll({ orderBy: orderBy() });
   console.log({ searchParams });
@@ -25,6 +27,10 @@ const YourCollectionPage = async ({
   return (
     <div className="flex h-fit min-h-full w-full flex-col items-center gap-6 p-4">
       <h1 className="text-2xl font-bold">Your fragrances</h1>
+      <SortBy
+        currentSort={orderBy()}
+        searchParams={searchParams}
+      />
       <Tabs
         defaultValue="bottles"
         className="flex w-full flex-col items-center gap-4"
