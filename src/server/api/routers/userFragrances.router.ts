@@ -8,42 +8,62 @@ import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const userFragrancesRouter = createTRPCRouter({
-  getAll: privateProcedure.query(({ ctx }) => {
-    const { currentUserId, db } = ctx;
-    return db
-      .select({
-        fragranceId: userFragrances.fragranceId,
-        name: fragrances.name,
-        house: fragrances.house,
-        imageUrl: fragrances.imageUrl,
-        createdAt: userFragrances.createdAt,
-        updatedAt: fragrances.updatedAt,
-        isDecant: userFragrances.isDecant,
-        status: userFragrances.status,
-        averageRating: sql<number>`COALESCE(CAST(AVG(${userFragranceLogs.enjoyment}) AS FLOAT), 0)`,
-        lastUsed: sql<Date>`MAX(${userFragranceLogs.logDate})`,
-      })
-      .from(userFragrances)
-      .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
-      .leftJoin(
-        userFragranceLogs,
-        and(
-          eq(userFragranceLogs.fragranceId, userFragrances.fragranceId),
-          eq(userFragranceLogs.userId, currentUserId),
-        ),
-      )
-      .where(eq(userFragrances.userId, currentUserId))
-      .groupBy(
-        userFragrances.fragranceId,
-        fragrances.name,
-        fragrances.house,
-        fragrances.imageUrl,
-        userFragrances.createdAt,
-        fragrances.updatedAt,
-        userFragrances.isDecant,
-        userFragrances.status,
-      );
-  }),
+  getAll: privateProcedure
+    .input(
+      z.object({
+        orderBy: z.enum(["name", "rating", "lastUsed"]).optional(),
+      }).optional(),
+    )
+    .query(({ ctx, input }) => {
+      const { currentUserId, db } = ctx;
+      const { orderBy } = input ?? {};
+      const orderByClause = () => {
+        if (orderBy === "name")
+          return sql`${fragrances.house} ASC, ${fragrances.name} ASC`;
+        if (orderBy === "rating")
+          return sql`AVG(${userFragranceLogs.enjoyment}) DESC NULLS LAST`;
+        if (orderBy === "lastUsed")
+          return sql`MAX(${userFragranceLogs.logDate}) DESC`;
+        return sql`${fragrances.house} ASC, ${fragrances.name} ASC`;
+      };
+
+      return db
+        .select({
+          fragranceId: userFragrances.fragranceId,
+          name: fragrances.name,
+          house: fragrances.house,
+          imageUrl: fragrances.imageUrl,
+          createdAt: userFragrances.createdAt,
+          updatedAt: fragrances.updatedAt,
+          isDecant: userFragrances.isDecant,
+          status: userFragrances.status,
+          averageRating: sql<
+            number | null
+          >`CAST(AVG(${userFragranceLogs.enjoyment}) AS FLOAT)`,
+          lastUsed: sql<Date>`MAX(${userFragranceLogs.logDate})`,
+        })
+        .from(userFragrances)
+        .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
+        .leftJoin(
+          userFragranceLogs,
+          and(
+            eq(userFragranceLogs.fragranceId, userFragrances.fragranceId),
+            eq(userFragranceLogs.userId, currentUserId),
+          ),
+        )
+        .where(eq(userFragrances.userId, currentUserId))
+        .groupBy(
+          userFragrances.fragranceId,
+          fragrances.name,
+          fragrances.house,
+          fragrances.imageUrl,
+          userFragrances.createdAt,
+          fragrances.updatedAt,
+          userFragrances.isDecant,
+          userFragrances.status,
+        )
+        .orderBy(orderByClause());
+    }),
   create: privateProcedure
     .input(
       z.object({

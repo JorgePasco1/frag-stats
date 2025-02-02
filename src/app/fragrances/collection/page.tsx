@@ -5,11 +5,8 @@ import { TabsContent, Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 const YourCollectionPage = async () => {
   const userFragrances = await api.userFragrances.getAll();
   console.log({userFragrances})
-  const orderedFragrances = userFragrances.sort((a, b) =>
-    a.house.localeCompare(b.house),
-  );
-  const bottles = orderedFragrances.filter((fragrance) => !fragrance.isDecant);
-  const decants = orderedFragrances.filter((fragrance) => fragrance.isDecant);
+  const bottles = userFragrances.filter((fragrance) => !fragrance.isDecant);
+  const decants = userFragrances.filter((fragrance) => fragrance.isDecant);
   return (
     <div className="flex h-fit min-h-full w-full flex-col items-center gap-6 p-4">
       <h1 className="text-2xl font-bold">Your fragrances</h1>
