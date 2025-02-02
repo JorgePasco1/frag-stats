@@ -2,9 +2,24 @@ import { api } from "~/trpc/server";
 import { FragranceCard } from "./_components/FragranceCard";
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 
-const YourCollectionPage = async () => {
-  const userFragrances = await api.userFragrances.getAll();
-  console.log({userFragrances})
+const YourCollectionPage = async ({
+  searchParams,
+}: {
+  searchParams: { sort?: string };
+}) => {
+  const orderBy = () => {
+    if (
+      searchParams.sort === "name" ||
+      searchParams.sort === "rating" ||
+      searchParams.sort === "lastUsed"
+    ) {
+      return searchParams.sort;
+    }
+    return undefined;
+  };
+
+  const userFragrances = await api.userFragrances.getAll({ orderBy: orderBy() });
+  console.log({ searchParams });
   const bottles = userFragrances.filter((fragrance) => !fragrance.isDecant);
   const decants = userFragrances.filter((fragrance) => fragrance.isDecant);
   return (

@@ -23,7 +23,7 @@ export const userFragrancesRouter = createTRPCRouter({
         if (orderBy === "rating")
           return sql`AVG(${userFragranceLogs.enjoyment}) DESC NULLS LAST`;
         if (orderBy === "lastUsed")
-          return sql`MAX(${userFragranceLogs.logDate}) DESC`;
+          return sql`MAX(${userFragranceLogs.logDate}) ASC`;
         return sql`${fragrances.house} ASC, ${fragrances.name} ASC`;
       };
 
