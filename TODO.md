@@ -18,13 +18,23 @@
 ## Fragrance Cards
 
 - [x] Add average rating to the fragrance cards
-- [ ] Add overlay on click to add log / delete edit fragrance
+- [x] Add overlay on click to add log / delete edit fragrance
 
 ## Graphs
 
 - [ ] Use over time
 - [ ] Enjoyment over time
 - [ ] Decants: first use to last use
+- [ ] Most used all time/monthly/weekly (perfumes, brands)
+- [ ] Highest rated brands
+- [ ] Streaks: days using, weeks (using X perfume at least once)
+
+## Collection
+
+- [ ] Order by
+  - [ ] Last used
+  - [ ] ratings
+  - [ ] longest since last use
 
 ## Misc
 
