@@ -53,14 +53,13 @@ export const FragranceSelect = ({
               field.onChange(+value);
             }}
             defaultValue={String(field.value)}
-            open
           >
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder="Select one" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent >
               {fragranceOptions?.map((frag) => {
                 return (
                   <SelectItem
