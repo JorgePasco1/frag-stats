@@ -53,6 +53,7 @@ export const FragranceSelect = ({
               field.onChange(+value);
             }}
             defaultValue={String(field.value)}
+            open
           >
             <FormControl>
               <SelectTrigger>
