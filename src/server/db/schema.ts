@@ -12,6 +12,7 @@ import {
   text,
   timestamp,
   varchar,
+  json
 } from "drizzle-orm/pg-core";
 
 /**
@@ -29,6 +30,15 @@ export const fragrances = createTable(
     name: varchar("name", { length: 256 }).notNull(),
     house: varchar("house", { length: 256 }).notNull(),
     imageUrl: varchar("image_url", { length: 256 }).notNull(),
+
+    // details
+    mainAccords: json("main_accords"),
+    occasions: json("occasions"),
+    aromaticFamily: varchar("aromatic_family", { length: 256 }),
+    notes: json("notes"),
+    genderDist: json("gender_dist"),
+    similarTo: json("similar_to"),
+
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
