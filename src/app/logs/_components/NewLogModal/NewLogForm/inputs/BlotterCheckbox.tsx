@@ -22,9 +22,10 @@ export const BlotterCheckbox = ({ form }: BlotterCheckboxProps) => {
               <Checkbox
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                id="testedInBlotter"
               />
               <div className="grid gap-1.5 leading-none">
-                <label htmlFor="isDecant">Testing on blotter?</label>
+                <label htmlFor="testedInBlotter">Testing on blotter?</label>
               </div>
             </div>
           </FormControl>
