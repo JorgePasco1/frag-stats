@@ -92,4 +92,27 @@ export const userFragrancesRouter = createTRPCRouter({
         isDecant,
       });
     }),
+  registerGone: privateProcedure.input(
+    z.object({
+      fragranceId: z.number(),
+      goneDate: z.date(),
+      hadDetails: z.enum(["emptied", "sold", "gifted", "lost"]),
+    })
+  ).mutation(async ({ ctx, input }) => {
+    const { currentUserId, db } = ctx;
+    const { fragranceId, goneDate, hadDetails } = input;
+    await db
+      .update(userFragrances)
+      .set({
+        status: "had",
+        goneDate,
+        hadDetails,
+      })
+      .where(
+        and(
+          eq(userFragrances.userId, currentUserId),
+          eq(userFragrances.fragranceId, fragranceId),
+        ),
+      );
+  })
 });

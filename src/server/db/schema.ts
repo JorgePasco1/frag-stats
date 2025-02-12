@@ -74,6 +74,8 @@ export const userFragrances = createTable(
     isDecant: boolean("is_decant").default(false).notNull(),
     status: statusEnum("status").default("have").notNull(),
     hadDetails: hadDetailsEnum("had_details"),
+    goneDate: timestamp("gone_date", { withTimezone: true }),
+    aquiredDate: timestamp("aquired_date", { withTimezone: true }),
   },
   (table) => ({
     userIdIndex: index("user_id_idx").on(table.userId),
