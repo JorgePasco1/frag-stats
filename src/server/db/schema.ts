@@ -12,7 +12,8 @@ import {
   text,
   timestamp,
   varchar,
-  json
+  json,
+  date
 } from "drizzle-orm/pg-core";
 
 /**
@@ -74,8 +75,8 @@ export const userFragrances = createTable(
     isDecant: boolean("is_decant").default(false).notNull(),
     status: statusEnum("status").default("have").notNull(),
     hadDetails: hadDetailsEnum("had_details"),
-    goneDate: timestamp("gone_date", { withTimezone: true }),
-    aquiredDate: timestamp("aquired_date", { withTimezone: true }),
+    goneDate: date("gone_date"),
+    aquiredDate: date("aquired_date"),
   },
   (table) => ({
     userIdIndex: index("user_id_idx").on(table.userId),

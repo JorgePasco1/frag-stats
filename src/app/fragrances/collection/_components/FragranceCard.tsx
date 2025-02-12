@@ -31,6 +31,9 @@ export const FragranceCard = ({ fragrance }: FragranceCardProps) => {
             View Stats
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem>
+          <div>It&apos;s gone</div>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

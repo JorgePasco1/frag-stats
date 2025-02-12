@@ -10,9 +10,11 @@ import { z } from "zod";
 export const userFragrancesRouter = createTRPCRouter({
   getAll: privateProcedure
     .input(
-      z.object({
-        orderBy: z.enum(["name", "rating", "lastUsed"]).optional(),
-      }).optional(),
+      z
+        .object({
+          orderBy: z.enum(["name", "rating", "lastUsed"]).optional(),
+        })
+        .optional(),
     )
     .query(({ ctx, input }) => {
       const { currentUserId, db } = ctx;
@@ -92,27 +94,31 @@ export const userFragrancesRouter = createTRPCRouter({
         isDecant,
       });
     }),
-  registerGone: privateProcedure.input(
-    z.object({
-      fragranceId: z.number(),
-      goneDate: z.date(),
-      hadDetails: z.enum(["emptied", "sold", "gifted", "lost"]),
-    })
-  ).mutation(async ({ ctx, input }) => {
-    const { currentUserId, db } = ctx;
-    const { fragranceId, goneDate, hadDetails } = input;
-    await db
-      .update(userFragrances)
-      .set({
-        status: "had",
-        goneDate,
-        hadDetails,
-      })
-      .where(
-        and(
-          eq(userFragrances.userId, currentUserId),
-          eq(userFragrances.fragranceId, fragranceId),
-        ),
-      );
-  })
+  registerGone: privateProcedure
+    .input(
+      z.object({
+        fragranceId: z.number(),
+        goneDate: z
+          .string()
+          .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
+        hadDetails: z.enum(["emptied", "sold", "gifted", "lost"]),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { currentUserId, db } = ctx;
+      const { fragranceId, goneDate, hadDetails } = input;
+      await db
+        .update(userFragrances)
+        .set({
+          status: "had",
+          goneDate,
+          hadDetails,
+        })
+        .where(
+          and(
+            eq(userFragrances.userId, currentUserId),
+            eq(userFragrances.fragranceId, fragranceId),
+          ),
+        );
+    }),
 });
