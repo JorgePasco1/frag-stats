@@ -28,6 +28,9 @@
 - [ ] Most used all time/monthly/weekly (perfumes, brands)
 - [ ] Highest rated brands
 - [ ] Streaks: days using, weeks (using X perfume at least once)
+- [ ] Calendar of bought
+- [ ] Providers I buy the most
+- [ ] Decants that I bought the longest ago
 
 ## Fragrance Details
 

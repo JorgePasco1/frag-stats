@@ -65,7 +65,8 @@ export const acquiredDetailsEnum = pgEnum("acquired_details", [
   "gifted",
   "exchanged",
   "giveaway",
-  "split"
+  "split",
+  "purchaseGift"
 ]);
 
 export const userFragrances = createTable(
