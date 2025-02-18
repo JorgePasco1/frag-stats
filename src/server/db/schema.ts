@@ -58,6 +58,14 @@ export const hadDetailsEnum = pgEnum("had_details", [
   "sold",
   "gifted",
   "lost",
+  "exchanged",
+]);
+export const acquiredDetailsEnum = pgEnum("acquired_details", [
+  "bought",
+  "gifted",
+  "exchanged",
+  "giveaway",
+  "split"
 ]);
 
 export const userFragrances = createTable(
@@ -77,6 +85,9 @@ export const userFragrances = createTable(
     hadDetails: hadDetailsEnum("had_details"),
     goneDate: date("gone_date"),
     aquiredDate: date("aquired_date"),
+    aquiredDetails: acquiredDetailsEnum("acquired_details").default("bought").notNull(),
+    acquiredFrom: varchar("acquired_from", { length: 256 }),
+    wentTo: varchar("went_to", { length: 256 }),
   },
   (table) => ({
     userIdIndex: index("user_id_idx").on(table.userId),
