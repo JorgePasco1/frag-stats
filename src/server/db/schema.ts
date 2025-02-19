@@ -13,7 +13,8 @@ import {
   timestamp,
   varchar,
   json,
-  date
+  date,
+  real
 } from "drizzle-orm/pg-core";
 
 /**
@@ -86,9 +87,15 @@ export const userFragrances = createTable(
     hadDetails: hadDetailsEnum("had_details"),
     goneDate: date("gone_date"),
     aquiredDate: date("aquired_date"),
-    aquiredDetails: acquiredDetailsEnum("acquired_details").default("bought").notNull(),
+    aquiredDetails: acquiredDetailsEnum("acquired_details")
+      .default("bought")
+      .notNull(),
     acquiredFrom: varchar("acquired_from", { length: 256 }),
     wentTo: varchar("went_to", { length: 256 }),
+    sizeInMl: real("size_in_ml"),
+    price: real("price"),
+    batchCode: varchar("batch_code", { length: 256 }),
+    sellPrice: real("sell_price"),
   },
   (table) => ({
     userIdIndex: index("user_id_idx").on(table.userId),
