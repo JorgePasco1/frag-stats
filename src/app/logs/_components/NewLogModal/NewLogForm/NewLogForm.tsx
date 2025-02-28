@@ -89,8 +89,12 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
           form={form}
           isTestingOnBlotter={testedInBlotter ?? false}
         />
-        <TimeOfDaySelect form={form} />
-        <WeatherSelect form={form} />
+        {!testedInBlotter && (
+          <>
+            <TimeOfDaySelect form={form} />
+            <WeatherSelect form={form} />
+          </>
+        )}
         <FragranceSelect
           form={form}
           userFragrances={userFragrances}

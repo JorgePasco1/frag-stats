@@ -4,21 +4,19 @@
 
 - [x] Rate the fragrance (by log)
 - [ ] Adding notes I like/dislike
-- [ ] Add occassion(casual, formal, ...), include guessing and testing.
+- [x] Add occassion(casual, formal, ...), include guessing and testing.
 - [x] Add a state to save the time when starting a log, so it's easier to track the duration
 - [ ] Change the log date to be only date, and add an added date field that is datetime
 - [ ] Click to see/edit a log
 - [ ] Add expand all button
 - [ ] Add first impressions log for scents I do not own
-- [ ] Add blotter testing
-- [ ] Add bottle size to collection (bottles and decants)
+- [x] Add blotter testing
 - [ ] Replace dropdown with Combobox
-- [ ] Make cards different color for bottles and decants.
 
 ## Fragrance Cards
 
 - [x] Add average rating to the fragrance cards
-- [x] Add overlay on click to add log / delete edit fragrance
+- [ ] Add overlay on click to add log / delete edit fragrance
 
 ## Graphs
 
@@ -34,9 +32,9 @@
 
 ## Fragrance Details
 
-- Perfumist
-- Batch
-- First use
+- [ ] Perfumist
+- [ ] Batch
+- [ ] First use
 
 ## Collection
 
@@ -44,6 +42,7 @@
   - [ ] Last used
   - [ ] ratings
   - [ ] longest since last use
+- [ ] Add bottle size to collection (bottles and decants)
 
 ## Misc
 
