@@ -28,7 +28,7 @@ export const NewLogModal = () => {
       <DialogTrigger asChild>
         <Button>Add new</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>New log</DialogTitle>
           <DialogDescription>

@@ -25,7 +25,7 @@ export const BlotterCheckbox = ({ form }: BlotterCheckboxProps) => {
                 id="testedInBlotter"
               />
               <div className="grid gap-1.5 leading-none">
-                <label htmlFor="testedInBlotter">Testing on blotter?</label>
+                <label htmlFor="testedInBlotter">Blotter?</label>
               </div>
             </div>
           </FormControl>

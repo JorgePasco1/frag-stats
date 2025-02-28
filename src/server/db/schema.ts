@@ -14,7 +14,7 @@ import {
   varchar,
   json,
   date,
-  real
+  real,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -67,7 +67,7 @@ export const acquiredDetailsEnum = pgEnum("acquired_details", [
   "exchanged",
   "giveaway",
   "split",
-  "purchaseGift"
+  "purchaseGift",
 ]);
 
 export const userFragrances = createTable(
@@ -103,6 +103,22 @@ export const userFragrances = createTable(
   }),
 );
 
+export const useCaseEnum = pgEnum("use_case", [
+  "casual",
+  "formal",
+  "date",
+  "clubbing",
+  "sport",
+  "hangout",
+  "personal",
+  "testing",
+  "guess_game"
+]);
+
+export const timeOfDayEnum = pgEnum("time_of_day", ["day", "night"]);
+
+export const weatherEnum = pgEnum("weather", ["hot", "cold", "mild"]);
+
 export const userFragranceLogs = createTable(
   "user_fragrance_log",
   {
@@ -117,6 +133,10 @@ export const userFragranceLogs = createTable(
     sprays: integer("sprays"),
     duration: integer("duration"),
     testedInBlotter: boolean("tested_in_blotter").default(false).notNull(),
+    timeOfDay: timeOfDayEnum("time_of_day"),
+    weather: weatherEnum("weather"),
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useCase: useCaseEnum("use_case"),
   },
   (table) => ({
     enjoymentRange: sql`CHECK (${table.enjoyment} BETWEEN 1 AND 10))`,

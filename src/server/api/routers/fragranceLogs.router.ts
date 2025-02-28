@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "../trpc";
-import { fragrances, userFragranceLogs } from "~/server/db/schema";
+import { fragrances, timeOfDayEnum, useCaseEnum, userFragranceLogs, weatherEnum } from "~/server/db/schema";
 import { eq, sql } from "drizzle-orm";
+
 
 export const userFragranceLogsRouter = createTRPCRouter({
   createUserFragranceLog: privateProcedure
@@ -14,12 +15,25 @@ export const userFragranceLogsRouter = createTRPCRouter({
         enjoyment: z.number().int().min(1).max(10).optional(),
         duration: z.number().int().optional(),
         testedInBlotter: z.boolean().optional(),
+        timeOfDay: z.enum(timeOfDayEnum.enumValues).optional(),
+        weather: z.enum(weatherEnum.enumValues).optional(),
+        useCase: z.enum(useCaseEnum.enumValues).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { currentUserId } = ctx;
-      const { fragranceId, logDate, notes, sprays, enjoyment, duration, testedInBlotter} =
-        input;
+      const {
+        fragranceId,
+        logDate,
+        notes,
+        sprays,
+        enjoyment,
+        duration,
+        testedInBlotter,
+        timeOfDay,
+        weather,
+        useCase,
+      } = input;
       return await ctx.db.insert(userFragranceLogs).values({
         userId: currentUserId,
         fragranceId,
@@ -29,6 +43,9 @@ export const userFragranceLogsRouter = createTRPCRouter({
         enjoyment,
         duration,
         testedInBlotter,
+        timeOfDay,
+        weather,
+        useCase,
       });
     }),
   getAllUserFragranceLogs: privateProcedure.query(({ ctx }) => {

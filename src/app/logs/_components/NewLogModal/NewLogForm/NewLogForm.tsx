@@ -7,7 +7,7 @@ import { Form } from "~/components/ui/form";
 
 import { api } from "~/trpc/react";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
 import { FragranceSelect, LogDatePicker } from "./inputs";
 import { EnjoymentRating } from "./inputs/EnjoymentRating";
@@ -17,6 +17,10 @@ import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { DurationInput } from "./inputs/DurationInput";
 import { BlotterCheckbox } from "./inputs/BlotterCheckbox";
+import { timeOfDayEnum, useCaseEnum, weatherEnum } from "~/server/db/schema";
+import { UseCaseSelect } from "./inputs/UseCaseSelect";
+import { TimeOfDaySelect } from "./inputs/TimeOfDaySelect";
+import { WeatherSelect } from "./inputs/WeatherSelect";
 
 type NewLogFormProps = {
   closeModal: () => void;
@@ -32,6 +36,15 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
     },
   });
   const testedInBlotter = form.watch("testedInBlotter");
+  useEffect(() => {
+    if (testedInBlotter) {
+      form.setValue("useCase", "testing");
+      return;
+    }
+    if (testedInBlotter === false) {
+      form.setValue("useCase", undefined);
+    }
+  }, [testedInBlotter, form]);
 
   const router = useRouter();
   const { mutate: createUserFragranceLog, isPending: isSubmissionLoading } =
@@ -72,6 +85,12 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
         className="flex flex-col gap-4"
       >
         <BlotterCheckbox form={form} />
+        <UseCaseSelect
+          form={form}
+          isTestingOnBlotter={testedInBlotter ?? false}
+        />
+        <TimeOfDaySelect form={form} />
+        <WeatherSelect form={form} />
         <FragranceSelect
           form={form}
           userFragrances={userFragrances}
@@ -105,6 +124,9 @@ const formSchema = z.object({
   notes: z.string().optional(),
   duration: z.number().int().optional(),
   testedInBlotter: z.boolean().optional(),
+  timeOfDay: z.enum(timeOfDayEnum.enumValues).optional(),
+  weather: z.enum(weatherEnum.enumValues).optional(),
+  useCase: z.enum(useCaseEnum.enumValues).optional(),
 });
 
 export type AddFragranceFormValues = z.infer<typeof formSchema>;

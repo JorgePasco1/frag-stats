@@ -50,3 +50,4 @@
 - [ ] Add a loader for a json file with the data scrapped from fragrantica
 - [ ] Summary of a brand by AI based on all reviews
 - [ ] Separate fragrance addition from user fragrance addition
+- [ ] Add house page
