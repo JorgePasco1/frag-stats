@@ -16,7 +16,6 @@ import { cn } from "~/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "~/components/ui/calendar";
-import { getDateStringFromDate } from "~/lib/dateHelper";
 
 type LogDatePickerProps = {
   form: NewLogFormInstance;
