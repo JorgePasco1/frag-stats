@@ -125,9 +125,9 @@ export const userFragranceLogs = createTable(
     id: serial("id").primaryKey(),
     userId: varchar("user_id", { length: 256 }).notNull(),
     fragranceId: serial("fragrance_id").notNull(),
-    logDate: timestamp("log_date", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+    logDate: date("log_date")
+      .notNull()
+      .default(sql`CURRENT_DATE`),
     notes: text("notes"),
     enjoyment: integer("enjoyment"),
     sprays: integer("sprays"),

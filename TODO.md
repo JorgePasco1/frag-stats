@@ -18,7 +18,7 @@
 - [x] Add average rating to the fragrance cards
 - [ ] Add overlay on click to add log / delete edit fragrance
 
-## Graphs
+## Graphs / Stats
 
 - [ ] Use over time
 - [ ] Enjoyment over time
@@ -29,6 +29,7 @@
 - [ ] Calendar of bought
 - [ ] Providers I buy the most
 - [ ] Decants that I bought the longest ago
+- [ ] Most recurrent use cases
 
 ## Fragrance Details
 

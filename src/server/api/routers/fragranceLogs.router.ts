@@ -9,7 +9,7 @@ export const userFragranceLogsRouter = createTRPCRouter({
     .input(
       z.object({
         fragranceId: z.number(),
-        logDate: z.date(),
+        logDate: z.string(),
         notes: z.string().optional(),
         sprays: z.number().int().min(1).optional(),
         enjoyment: z.number().int().min(1).max(10).optional(),

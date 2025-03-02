@@ -16,6 +16,7 @@ import { cn } from "~/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "~/components/ui/calendar";
+import { getDateStringFromDate } from "~/lib/dateHelper";
 
 type LogDatePickerProps = {
   form: NewLogFormInstance;
@@ -53,9 +54,6 @@ export const LogDatePicker = ({ form }: LogDatePickerProps) => {
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
-                }
                 initialFocus
               />
             </PopoverContent>

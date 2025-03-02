@@ -21,6 +21,7 @@ import { timeOfDayEnum, useCaseEnum, weatherEnum } from "~/server/db/schema";
 import { UseCaseSelect } from "./inputs/UseCaseSelect";
 import { TimeOfDaySelect } from "./inputs/TimeOfDaySelect";
 import { WeatherSelect } from "./inputs/WeatherSelect";
+import { getDateStringFromDate } from "~/lib/dateHelper";
 
 type NewLogFormProps = {
   closeModal: () => void;
@@ -56,7 +57,12 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
     });
 
   const onSubmit = (values: AddFragranceFormValues) => {
-    createUserFragranceLog(values);
+    console.log({logDate: getDateStringFromDate(values.logDate)});
+    return;
+    createUserFragranceLog({
+      ...values,
+      logDate: getDateStringFromDate(values.logDate),
+    });
   };
 
   const { data: userFragrances, isLoading } =
