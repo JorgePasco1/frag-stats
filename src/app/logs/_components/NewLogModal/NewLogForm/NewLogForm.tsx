@@ -57,8 +57,6 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
     });
 
   const onSubmit = (values: AddFragranceFormValues) => {
-    console.log({logDate: getDateStringFromDate(values.logDate)});
-    return;
     createUserFragranceLog({
       ...values,
       logDate: getDateStringFromDate(values.logDate),
