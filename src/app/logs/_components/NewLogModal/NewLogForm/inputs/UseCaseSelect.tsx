@@ -28,7 +28,7 @@ export const UseCaseSelect = ({
   isTestingOnBlotter,
 }: UseCaseSelectProps) => {
   const options: UseCase[] = useMemo(() => {
-    if (isTestingOnBlotter) return ["testing"];
+    if (isTestingOnBlotter) return ["testing", "guess_game"];
     return useCaseEnum.enumValues;
   }, [isTestingOnBlotter]);
 
