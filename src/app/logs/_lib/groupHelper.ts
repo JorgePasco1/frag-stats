@@ -1,10 +1,9 @@
-import { format } from "date-fns";
 import type { UserFragranceLog } from "~/types/UserFragranceLog.types";
 
 export const groupLogsByDate = (logs: UserFragranceLog[]) => {
   const result = {} as Record<string, UserFragranceLog[]>;
   logs?.forEach((log) => {
-    const date = format(log.logDate, "yyyy-MM-dd");
+    const date = log.logDate;
     if (!result[date]) {
       result[date] = [];
     }
