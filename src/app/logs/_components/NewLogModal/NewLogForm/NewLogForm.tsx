@@ -1,69 +1,35 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Form } from "~/components/ui/form";
 
 import { api } from "~/trpc/react";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
 import { Checkbox } from "~/components/ui/checkbox";
 import { FragranceSelect, LogDatePicker } from "./inputs";
 import { EnjoymentRating } from "./inputs/EnjoymentRating";
 import { SpraysInput } from "./inputs/SpraysInput";
 import { NotesInput } from "./inputs/NotesInput";
 import { Button } from "~/components/ui/button";
-import { useRouter } from "next/navigation";
+
 import { DurationInput } from "./inputs/DurationInput";
 import { BlotterCheckbox } from "./inputs/BlotterCheckbox";
-import { timeOfDayEnum, useCaseEnum, weatherEnum } from "~/server/db/schema";
+
 import { UseCaseSelect } from "./inputs/UseCaseSelect";
 import { TimeOfDaySelect } from "./inputs/TimeOfDaySelect";
 import { WeatherSelect } from "./inputs/WeatherSelect";
-import { getDateStringFromDate } from "~/lib/dateHelper";
+
+import { useNewLogFormValues } from "./hooks";
+import { useNewLogFormSubmission } from "./hooks/useNewLogFormSubmission";
 
 type NewLogFormProps = {
   closeModal: () => void;
 };
 
 export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
-  const [isDecant, setIsDecant] = useState(false);
-  const latestSelectedDate = localStorage.getItem("latestSelectedDate");
+  const { form, isDecant, handleOnDecantCheckboxClick, testedInBlotter } =
+    useNewLogFormValues();
 
-  const form = useForm<AddFragranceFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      logDate: latestSelectedDate ? new Date(latestSelectedDate) : new Date(),
-    },
-  });
-  const testedInBlotter = form.watch("testedInBlotter");
-  useEffect(() => {
-    if (testedInBlotter) {
-      form.setValue("useCase", "testing");
-      return;
-    }
-    if (testedInBlotter === false) {
-      form.setValue("useCase", undefined);
-    }
-  }, [testedInBlotter, form]);
-
-  const router = useRouter();
-  const { mutate: createUserFragranceLog, isPending: isSubmissionLoading } =
-    api.userFragranceLogs.createUserFragranceLog.useMutation({
-      onSuccess: () => {
-        closeModal();
-        router.refresh();
-      },
-    });
-
-  const onSubmit = (values: AddFragranceFormValues) => {
-    localStorage.setItem("latestSelectedDate", values.logDate.toISOString());
-    createUserFragranceLog({
-      ...values,
-      logDate: getDateStringFromDate(values.logDate),
-    });
-  };
+  const { onSubmit, isSubmissionLoading } = useNewLogFormSubmission(closeModal);
 
   const { data: userFragrances, isLoading } =
     api.userFragrances.getAll.useQuery();
@@ -77,9 +43,7 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
         <Checkbox
           checked={isDecant}
           id="isDecant"
-          onCheckedChange={(checked) => {
-            setIsDecant(Boolean(checked));
-          }}
+          onCheckedChange={handleOnDecantCheckboxClick}
         />
         <div className="grid gap-1.5 leading-none">
           <label htmlFor="isDecant">Is Decant?</label>
@@ -125,18 +89,3 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
     </Form>
   );
 };
-
-const formSchema = z.object({
-  fragranceId: z.number(),
-  logDate: z.date(),
-  enjoyment: z.number().int().min(1).max(10).optional(),
-  sprays: z.number().int().min(1).optional(),
-  notes: z.string().optional(),
-  duration: z.number().int().optional(),
-  testedInBlotter: z.boolean().optional(),
-  timeOfDay: z.enum(timeOfDayEnum.enumValues).optional(),
-  weather: z.enum(weatherEnum.enumValues).optional(),
-  useCase: z.enum(useCaseEnum.enumValues).optional(),
-});
-
-export type AddFragranceFormValues = z.infer<typeof formSchema>;
