@@ -42,7 +42,7 @@ export const userFragrancesRouter = createTRPCRouter({
           averageRating: sql<
             number | null
           >`CAST(AVG(${userFragranceLogs.enjoyment}) AS FLOAT)`,
-          lastUsed: sql<Date>`MAX(${userFragranceLogs.logDate})`,
+          lastUsed: sql<string>`MAX(${userFragranceLogs.logDate})`,
         })
         .from(userFragrances)
         .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))

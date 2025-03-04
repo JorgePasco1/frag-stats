@@ -43,6 +43,7 @@ export const CardComponent = ({ fragrance }: FragranceCardProps) => {
   const averageRatingText = fragrance.averageRating
     ? fragrance.averageRating.toFixed(2)
     : "Not rated yet";
+  console.log({fragrance})
   return (
     <div className="flex w-80 flex-col rounded-lg border-4 border-solid border-slate-900 bg-slate-800">
       <div className="flex justify-center bg-white">
@@ -63,7 +64,7 @@ export const CardComponent = ({ fragrance }: FragranceCardProps) => {
             <div className="mt-[3px]">{averageRatingText}</div>
           </div>
         </div>
-        <p>Last used on {new Date(fragrance.lastUsed).toLocaleDateString()}</p>
+        <p>Last used on {fragrance.lastUsed}</p>
         <p>Added on {new Date(fragrance.createdAt).toLocaleDateString()}</p>
       </div>
     </div>
