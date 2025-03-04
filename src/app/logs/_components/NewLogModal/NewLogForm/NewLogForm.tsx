@@ -29,11 +29,12 @@ type NewLogFormProps = {
 
 export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
   const [isDecant, setIsDecant] = useState(false);
+  const latestSelectedDate = localStorage.getItem("latestSelectedDate");
 
   const form = useForm<AddFragranceFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      logDate: new Date(),
+      logDate: latestSelectedDate ? new Date(latestSelectedDate) : new Date(),
     },
   });
   const testedInBlotter = form.watch("testedInBlotter");
@@ -57,6 +58,7 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
     });
 
   const onSubmit = (values: AddFragranceFormValues) => {
+    localStorage.setItem("latestSelectedDate", values.logDate.toISOString());
     createUserFragranceLog({
       ...values,
       logDate: getDateStringFromDate(values.logDate),
