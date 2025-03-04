@@ -11,8 +11,10 @@ import {
 } from "~/components/ui/dialog";
 import { NewLogForm } from "./NewLogForm";
 import { useState } from "react";
+import { api } from "~/trpc/react";
 
 export const NewLogModal = () => {
+  api.userFragrances.getLogOptions.usePrefetchQuery();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => setIsModalOpen(false);
   const [startedAt, setStartedAt] = useState<Date | null>(null);

@@ -15,12 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import type { UserFragrance } from "~/types/UserFragrance.types";
+import type { UserFragranceBasicData } from "~/types/UserFragrance.types";
 import type { NewLogFormInstance } from "../NewLogForm.types";
 
 type FragranceSelectorProps = {
   form: NewLogFormInstance;
-  userFragrances: UserFragrance[] | undefined;
+  userFragrances: UserFragranceBasicData[] | undefined;
   isDecant: boolean;
 };
 
@@ -31,14 +31,10 @@ export const FragranceSelect = ({
 }: FragranceSelectorProps) => {
   const fragranceOptions = useMemo(() => {
     if (!userFragrances) return [];
-    const sortedFragrances = userFragrances.sort((a, b) => {
-      return a.house.localeCompare(b.house);
-    }
-    );
     if (isDecant) {
-      return sortedFragrances.filter((frag) => frag.isDecant);
+      return userFragrances.filter((frag) => frag.isDecant);
     }
-    return sortedFragrances.filter((frag) => !frag.isDecant);
+    return userFragrances.filter((frag) => !frag.isDecant);
   }, [userFragrances, isDecant]);
 
   return (
@@ -59,7 +55,7 @@ export const FragranceSelect = ({
                 <SelectValue placeholder="Select one" />
               </SelectTrigger>
             </FormControl>
-            <SelectContent >
+            <SelectContent>
               {fragranceOptions?.map((frag) => {
                 return (
                   <SelectItem

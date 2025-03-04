@@ -66,6 +66,25 @@ export const userFragrancesRouter = createTRPCRouter({
         )
         .orderBy(orderByClause());
     }),
+  getLogOptions: privateProcedure.query(({ ctx }) => {
+    const { currentUserId, db } = ctx;
+    return db
+      .select({
+        house: fragrances.house,
+        name: fragrances.name,
+        fragranceId: fragrances.id,
+        isDecant: userFragrances.isDecant,
+      })
+      .from(userFragrances)
+      .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
+      .where(
+        and(
+          eq(userFragrances.userId, currentUserId),
+          eq(userFragrances.status, "have"),
+        ),
+      )
+      .orderBy(sql`${fragrances.house} ASC, ${fragrances.name} ASC`);
+  }),
   create: privateProcedure
     .input(
       z.object({

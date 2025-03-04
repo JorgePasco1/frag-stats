@@ -30,7 +30,7 @@ export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
   const { onSubmit, isSubmissionLoading } = useNewLogFormSubmission(closeModal);
 
   const { data: userFragrances, isLoading } =
-    api.userFragrances.getAll.useQuery();
+    api.userFragrances.getLogOptions.useQuery();
 
   if (isLoading) {
     return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
