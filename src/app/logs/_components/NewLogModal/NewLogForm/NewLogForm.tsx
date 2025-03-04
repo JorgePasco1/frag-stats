@@ -1,5 +1,3 @@
-"use client";
-
 import { Form } from "~/components/ui/form";
 
 import { api } from "~/trpc/react";
