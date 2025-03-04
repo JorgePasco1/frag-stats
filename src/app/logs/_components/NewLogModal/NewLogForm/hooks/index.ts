@@ -1,1 +1,4 @@
-export { useNewLogFormValues, AddFragranceFormValues } from "./useNewLogFormValues";
+export {
+  useNewLogFormValues,
+  type AddFragranceLogFormValues,
+} from "./useNewLogFormValues";

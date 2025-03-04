@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 
 import { getDateStringFromDate } from "~/lib/dateHelper";
 import { api } from "~/trpc/react";
-import type { AddFragranceFormValues } from "./useNewLogFormValues";
+import type { AddFragranceLogFormValues } from "./useNewLogFormValues";
 
 export const useNewLogFormSubmission = (closeModal: () => void) => {
   const router = useRouter();
@@ -14,7 +14,7 @@ export const useNewLogFormSubmission = (closeModal: () => void) => {
       },
     });
 
-  const onSubmit = (values: AddFragranceFormValues) => {
+  const onSubmit = (values: AddFragranceLogFormValues) => {
     localStorage.setItem("latestSelectedDate", values.logDate.toISOString());
     createUserFragranceLog({
       ...values,
