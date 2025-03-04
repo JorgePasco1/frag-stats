@@ -12,7 +12,7 @@ export const useNewLogFormValues = () => {
   };
   const latestSelectedDate = localStorage.getItem("latestSelectedDate");
 
-  const form = useForm<AddFragranceFormValues>({
+  const form = useForm<AddFragranceLogFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       logDate: latestSelectedDate ? new Date(latestSelectedDate) : new Date(),
@@ -50,4 +50,4 @@ const formSchema = z.object({
   useCase: z.enum(useCaseEnum.enumValues).optional(),
 });
 
-export type AddFragranceFormValues = z.infer<typeof formSchema>;
+export type AddFragranceLogFormValues = z.infer<typeof formSchema>;

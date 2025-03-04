@@ -1,4 +1,5 @@
 import type { UseFormReturn } from "react-hook-form";
-import type { AddFragranceFormValues } from "./NewLogForm";
+import type { AddFragranceLogFormValues } from "./hooks/useNewLogFormValues";
 
-export type NewLogFormInstance = UseFormReturn<AddFragranceFormValues>;
+
+export type NewLogFormInstance = UseFormReturn<AddFragranceLogFormValues>;
