@@ -21,13 +21,19 @@ import { useNewLogFormSubmission } from "./hooks/useNewLogFormSubmission";
 
 type NewLogFormProps = {
   closeModal: () => void;
+  latestSelectedDate: Date | null;
+  setLatestSelectedDate: (date: Date) => void;
 };
 
-export const NewLogForm = ({ closeModal }: NewLogFormProps) => {
+export const NewLogForm = ({
+  closeModal,
+  latestSelectedDate,
+  setLatestSelectedDate,
+}: NewLogFormProps) => {
   const { form, isDecant, handleOnDecantCheckboxClick, testedInBlotter } =
-    useNewLogFormValues();
+    useNewLogFormValues(latestSelectedDate);
 
-  const { onSubmit, isSubmissionLoading } = useNewLogFormSubmission(closeModal);
+  const { onSubmit, isSubmissionLoading } = useNewLogFormSubmission(closeModal, setLatestSelectedDate);
 
   const { data: userFragrances, isLoading } =
     api.userFragrances.getLogOptions.useQuery();

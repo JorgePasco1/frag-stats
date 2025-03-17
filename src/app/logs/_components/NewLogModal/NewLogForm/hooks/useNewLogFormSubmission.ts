@@ -4,7 +4,10 @@ import { getDateStringFromDate } from "~/lib/dateHelper";
 import { api } from "~/trpc/react";
 import type { AddFragranceLogFormValues } from "./useNewLogFormValues";
 
-export const useNewLogFormSubmission = (closeModal: () => void) => {
+export const useNewLogFormSubmission = (
+  closeModal: () => void,
+  setLatestSelectedDate: (date: Date) => void,
+) => {
   const router = useRouter();
   const { mutate: createUserFragranceLog, isPending: isSubmissionLoading } =
     api.userFragranceLogs.createUserFragranceLog.useMutation({
@@ -15,7 +18,7 @@ export const useNewLogFormSubmission = (closeModal: () => void) => {
     });
 
   const onSubmit = (values: AddFragranceLogFormValues) => {
-    localStorage.setItem("latestSelectedDate", values.logDate.toISOString());
+    setLatestSelectedDate(values.logDate);
     createUserFragranceLog({
       ...values,
       logDate: getDateStringFromDate(values.logDate),

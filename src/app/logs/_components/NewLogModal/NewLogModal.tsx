@@ -19,6 +19,10 @@ export const NewLogModal = () => {
   const closeModal = () => setIsModalOpen(false);
   const [startedAt, setStartedAt] = useState<Date | null>(null);
 
+  const [latestSelectedDate, setLatestSelectedDate] = useState<Date | null>(
+    null,
+  );
+
   return (
     <Dialog
       open={isModalOpen}
@@ -42,7 +46,11 @@ export const NewLogModal = () => {
             )}
           </DialogDescription>
         </DialogHeader>
-        <NewLogForm closeModal={closeModal} />
+        <NewLogForm
+          closeModal={closeModal}
+          latestSelectedDate={latestSelectedDate}
+          setLatestSelectedDate={setLatestSelectedDate}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -5,17 +5,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { timeOfDayEnum, useCaseEnum, weatherEnum } from "~/server/db/schema";
 
-export const useNewLogFormValues = () => {
+export const useNewLogFormValues = (
+  latestSelectedDate: Date | null,
+) => {
   const [isDecant, setIsDecant] = useState(false);
   const handleOnDecantCheckboxClick = (checked: boolean) => {
     return setIsDecant(checked);
   };
-  const latestSelectedDate = localStorage.getItem("latestSelectedDate");
 
   const form = useForm<AddFragranceLogFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      logDate: latestSelectedDate ? new Date(latestSelectedDate) : new Date(),
+      logDate: latestSelectedDate ?? new Date(),
     },
   });
   const testedInBlotter = form.watch("testedInBlotter");
@@ -33,8 +34,8 @@ export const useNewLogFormValues = () => {
     form,
     isDecant,
     handleOnDecantCheckboxClick,
-    testedInBlotter
-  }
+    testedInBlotter,
+  };
 };
 
 const formSchema = z.object({
