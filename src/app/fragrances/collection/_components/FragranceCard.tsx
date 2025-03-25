@@ -43,7 +43,6 @@ export const CardComponent = ({ fragrance }: FragranceCardProps) => {
   const averageRatingText = fragrance.averageRating
     ? fragrance.averageRating.toFixed(2)
     : "Not rated yet";
-  console.log({fragrance})
   return (
     <div className="flex w-80 flex-col rounded-lg border-4 border-solid border-slate-900 bg-slate-800">
       <div className="flex justify-center bg-white">

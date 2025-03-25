@@ -21,7 +21,6 @@ const YourCollectionPage = async ({
 
 
   const userFragrances = await api.userFragrances.getAll({ orderBy: orderBy() });
-  console.log({ searchParams });
   const bottles = userFragrances.filter((fragrance) => !fragrance.isDecant);
   const decants = userFragrances.filter((fragrance) => fragrance.isDecant);
   return (
