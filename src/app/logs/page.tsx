@@ -4,6 +4,7 @@ import { groupLogsByDate } from "./_lib/groupHelper";
 import { LogGroup } from "./_components/LogGroup";
 
 const LogsIndex = async () => {
+  void api.userFragrances.getLogOptions.prefetch();
   const userFragranceLogs =
     await api.userFragranceLogs.getAllUserFragranceLogs();
   const logGroups = groupLogsByDate(userFragranceLogs);
