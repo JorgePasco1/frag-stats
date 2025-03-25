@@ -1,0 +1,1 @@
+export { useSubmitFragranceFarewell } from "./useSubmitFragranceFarewell";

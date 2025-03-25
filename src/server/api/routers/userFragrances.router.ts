@@ -1,5 +1,6 @@
 import {
   fragrances,
+  hadDetailsEnum,
   userFragranceLogs,
   userFragrances,
 } from "~/server/db/schema";
@@ -31,7 +32,6 @@ export const userFragrancesRouter = createTRPCRouter({
 
       return db
         .select({
-          userFragranceId: userFragrances.id,
           fragranceId: userFragrances.fragranceId,
           name: fragrances.name,
           house: fragrances.house,
@@ -121,18 +121,22 @@ export const userFragrancesRouter = createTRPCRouter({
         goneDate: z
           .string()
           .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
-        hadDetails: z.enum(["emptied", "sold", "gifted", "lost"]),
+        hadDetails: z.enum(hadDetailsEnum.enumValues),
+        wentTo: z.string().optional(),
+        sellPrice: z.number().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { currentUserId, db } = ctx;
-      const { fragranceId, goneDate, hadDetails } = input;
+      const { fragranceId, goneDate, hadDetails, wentTo, sellPrice } = input;
       await db
         .update(userFragrances)
         .set({
           status: "had",
           goneDate,
           hadDetails,
+          wentTo,
+          sellPrice,
         })
         .where(
           and(

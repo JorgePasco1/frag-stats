@@ -12,9 +12,9 @@ const FragranceFarewellPage = async ({
       fragranceId: parseInt(fragranceId),
     })) ?? {};
   return (
-    <div className="pt-4 flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 pt-4">
       <div className="text-lg">Farewell {name}</div>
-      <FarewellForm />
+      <FarewellForm fragranceId={parseInt(fragranceId)} />
     </div>
   );
 };
