@@ -3,7 +3,7 @@ import { Form } from "~/components/ui/form";
 import { api } from "~/trpc/react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Checkbox } from "~/components/ui/checkbox";
-import { FragranceSelect, LogDatePicker } from "./inputs";
+import { FragranceSelect } from "./inputs";
 import { EnjoymentRating } from "./inputs/EnjoymentRating";
 import { SpraysInput } from "./inputs/SpraysInput";
 import { NotesInput } from "./inputs/NotesInput";
@@ -13,11 +13,13 @@ import { DurationInput } from "./inputs/DurationInput";
 import { BlotterCheckbox } from "./inputs/BlotterCheckbox";
 
 import { UseCaseSelect } from "./inputs/UseCaseSelect";
-import { TimeOfDaySelect } from "./inputs/TimeOfDaySelect";
 import { WeatherSelect } from "./inputs/WeatherSelect";
 
 import { useNewLogFormValues } from "./hooks";
 import { useNewLogFormSubmission } from "./hooks/useNewLogFormSubmission";
+import { LogDatePicker } from "~/app/_components/LogDatePicker";
+import { SelectDropdown } from "~/app/_components/SelectDropdown";
+import { timeOfDayEnum } from "~/server/db/schema";
 
 type NewLogFormProps = {
   closeModal: () => void;
@@ -33,7 +35,10 @@ export const NewLogForm = ({
   const { form, isDecant, handleOnDecantCheckboxClick, testedInBlotter } =
     useNewLogFormValues(latestSelectedDate);
 
-  const { onSubmit, isSubmissionLoading } = useNewLogFormSubmission(closeModal, setLatestSelectedDate);
+  const { onSubmit, isSubmissionLoading } = useNewLogFormSubmission(
+    closeModal,
+    setLatestSelectedDate,
+  );
 
   const { data: userFragrances, isLoading } =
     api.userFragrances.getLogOptions.useQuery();
@@ -65,7 +70,12 @@ export const NewLogForm = ({
         />
         {!testedInBlotter && (
           <>
-            <TimeOfDaySelect form={form} />
+            <SelectDropdown
+              form={form}
+              fieldName="timeOfDay"
+              label="Time of Day"
+              options={timeOfDayEnum.enumValues}
+            />
             <WeatherSelect form={form} />
           </>
         )}
@@ -74,7 +84,7 @@ export const NewLogForm = ({
           userFragrances={userFragrances}
           isDecant={isDecant}
         />
-        <LogDatePicker form={form} />
+        <LogDatePicker form={form} fieldName="logDate" label="Log Date" />
         <EnjoymentRating form={form} />
         {!testedInBlotter && (
           <>

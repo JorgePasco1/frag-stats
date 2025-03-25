@@ -14,22 +14,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import type { NewLogFormInstance } from "../NewLogForm.types";
-import { timeOfDayEnum } from "~/server/db/schema";
 import { capitalize } from "~/lib/stringHelper";
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
-type TimeOfDaySelectProps = {
-  form: NewLogFormInstance;
+type SelectDropdownProps<T extends FieldValues> = {
+  form: UseFormReturn<T>;
+  fieldName: Path<T>;
+  label: string;
+  options: string[];
 };
 
-export const TimeOfDaySelect = ({ form }: TimeOfDaySelectProps) => {
+export const SelectDropdown = <S extends FieldValues>({
+  form,
+  fieldName,
+  label,
+  options,
+}: SelectDropdownProps<S>) => {
   return (
     <FormField
       control={form.control}
-      name="timeOfDay"
+      name={fieldName}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Time of Day</FormLabel>
+          <FormLabel>{label}</FormLabel>
           <Select
             onValueChange={(value) => {
               field.onChange(value);
@@ -42,10 +49,13 @@ export const TimeOfDaySelect = ({ form }: TimeOfDaySelectProps) => {
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {timeOfDayEnum.enumValues?.map((timeOfDay) => {
+              {options.map((item) => {
                 return (
-                  <SelectItem key={`time-of-day-${timeOfDay}`} value={timeOfDay}>
-                    {capitalize(timeOfDay)}
+                  <SelectItem
+                    key={`select-dropdown-item-${fieldName}-${item}`}
+                    value={item}
+                  >
+                    {capitalize(item)}
                   </SelectItem>
                 );
               })}

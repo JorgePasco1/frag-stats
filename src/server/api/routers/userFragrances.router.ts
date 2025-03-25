@@ -31,6 +31,7 @@ export const userFragrancesRouter = createTRPCRouter({
 
       return db
         .select({
+          userFragranceId: userFragrances.id,
           fragranceId: userFragrances.fragranceId,
           name: fragrances.name,
           house: fragrances.house,

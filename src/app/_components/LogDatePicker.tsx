@@ -1,5 +1,4 @@
 import { Button } from "~/components/ui/button";
-import type { NewLogFormInstance } from "../NewLogForm.types";
 import {
   FormControl,
   FormField,
@@ -17,18 +16,26 @@ import { format } from "date-fns";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "~/components/ui/calendar";
 
-type LogDatePickerProps = {
-  form: NewLogFormInstance;
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
+
+type LogDatePickerProps<T extends FieldValues> = {
+  form: UseFormReturn<T>;
+  fieldName: Path<T>;
+  label: string;
 };
 
-export const LogDatePicker = ({ form }: LogDatePickerProps) => {
+export const LogDatePicker = <S extends FieldValues>({
+  form,
+  fieldName,
+  label,
+}: LogDatePickerProps<S>) => {
   return (
     <FormField
       control={form.control}
-      name="logDate"
+      name={fieldName}
       render={({ field }) => (
         <FormItem className="flex flex-col gap-1">
-          <FormLabel>Log date</FormLabel>
+          <FormLabel>{label}</FormLabel>
           <Popover modal>
             <PopoverTrigger asChild>
               <FormControl>
