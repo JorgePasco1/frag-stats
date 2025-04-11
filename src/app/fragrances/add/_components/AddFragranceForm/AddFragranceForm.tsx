@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -18,6 +18,12 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "~/components/ui/checkbox";
+import { acquiredDetailsEnum } from "~/server/db/schema";
+import { getDateStringFromDate } from "~/lib/dateHelper";
+import { LogDatePicker } from "~/app/_components/LogDatePicker";
+import { SelectDropdown } from "~/app/_components/SelectDropdown";
+import { TextInput } from "~/app/_components/TextInput";
+import { NumericInput } from "~/app/_components/NumericInput";
 
 export const AddFragranceForm = () => {
   const form = useForm<AddFragranceFormValues>({
@@ -32,7 +38,10 @@ export const AddFragranceForm = () => {
       },
     });
   const onSubmit = (values: AddFragranceFormValues) => {
-    submitForm(values);
+    submitForm({
+      ...values,
+      acquiredDate: getDateStringFromDate(values.acquiredDate),
+    });
   };
   return (
     <Form {...form}>
@@ -40,45 +49,6 @@ export const AddFragranceForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex min-w-96 flex-col gap-4"
       >
-        <FormField
-          control={form.control}
-          name="house"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>House</FormLabel>
-              <FormControl>
-                <Input placeholder="Chanel" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="No. 5" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="imageUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image URL</FormLabel>
-              <FormControl>
-                <Input placeholder="https://example.com/image.jpg" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="isDecant"
@@ -96,6 +66,48 @@ export const AddFragranceForm = () => {
             </FormItem>
           )}
         />
+        <TextInput
+          form={form}
+          fieldName="house"
+          label="House"
+          placeholder="Chanel"
+        />
+        <TextInput
+          form={form}
+          fieldName="name"
+          label="Name"
+          placeholder="Bleu de Chanel"
+        />
+        <TextInput
+          form={form}
+          fieldName="imageUrl"
+          label="Image URL"
+          placeholder="https://example.com/image.jpg"
+        />
+        <LogDatePicker
+          form={form}
+          fieldName="acquiredDate"
+          label="Acquired Date"
+        />
+        <SelectDropdown
+          form={form}
+          fieldName="acquiredDetails"
+          label="How was it acquired?"
+          options={acquiredDetailsEnum.enumValues}
+        />
+        <TextInput form={form} fieldName="acquiredFrom" label="Acquired From" />
+        <NumericInput
+          form={form}
+          fieldName="price"
+          label="Price"
+          numericType="float"
+        />
+        <NumericInput
+          form={form}
+          fieldName="sizeInMl"
+          label="Size in ml"
+          numericType="float"
+        />
         <Button type="submit" disabled={isPending}>
           {isPending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
           Submit
@@ -110,6 +122,12 @@ const formSchema = z.object({
   house: z.string(),
   imageUrl: z.string(),
   isDecant: z.boolean().optional(),
+  acquiredDate: z.date(),
+  acquiredDetails: z.enum(acquiredDetailsEnum.enumValues),
+  acquiredFrom: z.string(),
+  price: z.number(),
+  sizeInMl: z.number(),
 });
 
 type AddFragranceFormValues = z.infer<typeof formSchema>;
+export type AddFragranceFormInstance = UseFormReturn<AddFragranceFormValues>;

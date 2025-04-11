@@ -86,14 +86,14 @@ export const userFragrances = createTable(
     status: statusEnum("status").default("have").notNull(),
     hadDetails: hadDetailsEnum("had_details"),
     goneDate: date("gone_date"),
-    aquiredDate: date("aquired_date"),
-    aquiredDetails: acquiredDetailsEnum("acquired_details")
+    acquiredDate: date("acquired_date"),
+    acquiredDetails: acquiredDetailsEnum("acquired_details")
       .default("bought")
       .notNull(),
     acquiredFrom: varchar("acquired_from", { length: 256 }),
     wentTo: varchar("went_to", { length: 256 }),
-    sizeInMl: real("size_in_ml"),
-    price: real("price"),
+    sizeInMl: real("size_in_ml").notNull(),
+    price: real("price").notNull(),
     batchCode: varchar("batch_code", { length: 256 }),
     sellPrice: real("sell_price"),
   },

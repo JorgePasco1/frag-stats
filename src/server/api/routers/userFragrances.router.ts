@@ -1,4 +1,5 @@
 import {
+  acquiredDetailsEnum,
   fragrances,
   hadDetailsEnum,
   userFragranceLogs,
@@ -93,11 +94,27 @@ export const userFragrancesRouter = createTRPCRouter({
         house: z.string(),
         imageUrl: z.string(),
         isDecant: z.boolean().optional(),
+        acquiredDate: z.string(),
+        acquiredDetails: z.enum(acquiredDetailsEnum.enumValues),
+        acquiredFrom: z.string(),
+        price: z.number(),
+        sizeInMl: z.number(),
+        batchCode: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const { currentUserId, db } = ctx;
-      const { name, house, imageUrl, isDecant } = input;
+      const {
+        name,
+        house,
+        imageUrl,
+        isDecant,
+        acquiredDate,
+        acquiredDetails,
+        acquiredFrom,
+        price,
+        sizeInMl,
+      } = input;
       const fragranceInsertResult = await db
         .insert(fragrances)
         .values({
@@ -112,6 +129,11 @@ export const userFragrancesRouter = createTRPCRouter({
         userId: currentUserId,
         fragranceId: fragrance.insertedId,
         isDecant,
+        acquiredDate,
+        acquiredDetails,
+        acquiredFrom,
+        price,
+        sizeInMl
       });
     }),
   registerGone: privateProcedure
