@@ -24,12 +24,13 @@
 - [ ] Enjoyment over time
 - [ ] Decants: first use to last use
 - [ ] Most used all time/monthly/weekly (perfumes, brands)
-- [ ] Highest rated brands
+- [ ] Highest rated/tested brands
 - [ ] Streaks: days using, weeks (using X perfume at least once)
 - [ ] Calendar of bought
 - [ ] Providers I buy the most
 - [ ] Decants that I bought the longest ago
 - [ ] Most recurrent use cases
+- [ ] Total of tried scents
 
 ## Fragrance Details
 
@@ -51,3 +52,7 @@
 - [ ] Summary of a brand by AI based on all reviews
 - [ ] Separate fragrance addition from user fragrance addition
 - [ ] Add house page
+
+## Bugs
+
+- [ ] Duplicated fragrances for log options (when I own 2 bottles, e.g. Drakkar Noir)

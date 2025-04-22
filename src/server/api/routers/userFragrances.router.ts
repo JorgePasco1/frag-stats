@@ -70,8 +70,8 @@ export const userFragrancesRouter = createTRPCRouter({
     }),
   getLogOptions: privateProcedure.query(({ ctx }) => {
     const { currentUserId, db } = ctx;
-    return db
-      .select({
+    const distinctSubquery = db
+      .selectDistinctOn([fragrances.id], {
         house: fragrances.house,
         name: fragrances.name,
         fragranceId: fragrances.id,
@@ -85,7 +85,17 @@ export const userFragrancesRouter = createTRPCRouter({
           eq(userFragrances.status, "have"),
         ),
       )
-      .orderBy(sql`${fragrances.house} ASC, ${fragrances.name} ASC`);
+      .orderBy(
+        fragrances.id, // required for DISTINCT ON
+        fragrances.house,
+        fragrances.name,
+      )
+      .as("distinct_frags");
+
+    return db
+      .select()
+      .from(distinctSubquery)
+      .orderBy(distinctSubquery.house, distinctSubquery.name);
   }),
   create: privateProcedure
     .input(
@@ -133,7 +143,7 @@ export const userFragrancesRouter = createTRPCRouter({
         acquiredDetails,
         acquiredFrom,
         price,
-        sizeInMl
+        sizeInMl,
       });
     }),
   registerGone: privateProcedure
