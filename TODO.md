@@ -55,4 +55,4 @@
 
 ## Bugs
 
-- [ ] Duplicated fragrances for log options (when I own 2 bottles, e.g. Drakkar Noir)
+- [x] Duplicated fragrances for log options (when I own 2 bottles, e.g. Drakkar Noir)

@@ -80,4 +80,5 @@ const useCaseLabelMap: { [key in UseCase]: string } = {
   hangout: "Hangout",
   personal: "Personal",
   guess_game: "Guessing Game",
+  concert: "Concert",
 };

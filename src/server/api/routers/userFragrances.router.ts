@@ -71,7 +71,7 @@ export const userFragrancesRouter = createTRPCRouter({
   getLogOptions: privateProcedure.query(({ ctx }) => {
     const { currentUserId, db } = ctx;
     const distinctSubquery = db
-      .selectDistinctOn([fragrances.id], {
+      .selectDistinctOn([fragrances.id, userFragrances.isDecant], {
         house: fragrances.house,
         name: fragrances.name,
         fragranceId: fragrances.id,
@@ -86,7 +86,8 @@ export const userFragrancesRouter = createTRPCRouter({
         ),
       )
       .orderBy(
-        fragrances.id, // required for DISTINCT ON
+        fragrances.id,
+        userFragrances.isDecant,
         fragrances.house,
         fragrances.name,
       )
