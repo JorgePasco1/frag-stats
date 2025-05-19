@@ -55,7 +55,12 @@ export const userFragrancesRouter = createTRPCRouter({
             eq(userFragranceLogs.userId, currentUserId),
           ),
         )
-        .where(eq(userFragrances.userId, currentUserId))
+        .where(
+          and(
+            eq(userFragrances.userId, currentUserId),
+            eq(userFragrances.status, "have"),
+          ),
+        )
         .groupBy(
           userFragrances.fragranceId,
           fragrances.name,
