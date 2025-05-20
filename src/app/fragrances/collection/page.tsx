@@ -22,7 +22,10 @@ const YourCollectionPage = async ({
 
   const userFragrances = await api.userFragrances.getAll({ orderBy: orderBy() });
   const bottles = userFragrances.filter((fragrance) => !fragrance.isDecant);
+  const bottlesCount = bottles.length;
+
   const decants = userFragrances.filter((fragrance) => fragrance.isDecant);
+  const decantsCount = decants.length;
   return (
     <div className="flex h-fit min-h-full w-full flex-col items-center gap-6 p-4">
       <h1 className="text-2xl font-bold">Your fragrances</h1>
@@ -35,8 +38,8 @@ const YourCollectionPage = async ({
         className="flex w-full flex-col items-center gap-4"
       >
         <TabsList>
-          <TabsTrigger value="bottles">Bottles</TabsTrigger>
-          <TabsTrigger value="decants">Decants</TabsTrigger>
+          <TabsTrigger value="bottles">Bottles ({bottlesCount})</TabsTrigger>
+          <TabsTrigger value="decants">Decants ({decantsCount})</TabsTrigger>
         </TabsList>
         <TabsContent value="bottles">
           <div className="flex w-full flex-wrap justify-center gap-8">
