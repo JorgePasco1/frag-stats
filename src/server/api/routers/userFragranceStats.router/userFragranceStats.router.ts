@@ -39,6 +39,7 @@ export const userFragranceStatsRouter = createTRPCRouter({
           enjoyment: userFragranceLogs.enjoyment,
           logDate: userFragranceLogs.logDate,
           notes: userFragranceLogs.notes,
+          useCase: userFragranceLogs.useCase,
         })
         .from(userFragranceLogs)
         .where(
@@ -47,6 +48,7 @@ export const userFragranceStatsRouter = createTRPCRouter({
             eq(userFragranceLogs.fragranceId, fragranceId),
             eq(userFragranceLogs.testedInBlotter, false),
             sql`${userFragranceLogs.useCase} != 'guess_game'`,
+            sql`${userFragranceLogs.notes} IS NOT NULL`,
           ),
         );
 
@@ -60,8 +62,11 @@ export const userFragranceStatsRouter = createTRPCRouter({
       // If no recent summary exists, generate a new one
       if (!existingSummary) {
         const notes = userFragranceStats
-          .map((stat) => stat.notes)
-          .filter((note): note is string => note !== null);
+          .map((stat) => ({
+            notes: stat.notes ?? "",
+            useCase: stat.useCase ?? "unspecified",
+          }));
+
 
         if (notes.length > 0) {
           const summary = await generateNoteSummary(notes);

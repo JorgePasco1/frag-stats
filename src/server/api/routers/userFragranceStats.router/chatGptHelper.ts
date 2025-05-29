@@ -33,10 +33,13 @@ export const checkRecentSummary = async (
   return recentSummary[0];
 };
 
-export const generateNoteSummary = async (notes: string[]) => {
+export const generateNoteSummary = async (notes: {
+  notes: string;
+  useCase: string;
+}[]) => {
   const prompt = `Write a summary of my thoughts on a fragrance:
 
-${notes.join("\n--------------------------------\n")}
+${notes.map((note) => `${note.notes} (Use case: ${note.useCase})`).join("\n--------------------------------\n")}
 
 Please provide a insightful summary that captures my feels about it, and my perception and identification of notes. Speak in first person, as if you are me. Try to capture as much as possible, both positive and negative, how my perception has changed over time, etc.
 
@@ -48,7 +51,7 @@ Avoid talking about:
 - Compliments or perception of thirds (being noticed, etc.)
 - Specific places I've visit or people I've been with.
 
-Avoid being too cheesy, using phrases like "despite my concern".
+Avoid being too cheesy, using phrases like "despite my concern". Separate your review in paragraphs. Have in mind the use case, but only if it's very noticeable that there's a tendency to use the fragrance in that use case.
 `;
 
   const completion = await openai.chat.completions.create({

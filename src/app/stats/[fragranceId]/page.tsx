@@ -55,7 +55,7 @@ const FragranceStatsPage = ({
           <CardTitle>Note Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <div>{noteSummary}</div>
+          <div className="whitespace-pre-wrap">{noteSummary}</div>
         </CardContent>
       </Card>
       <Card className="w-full">
