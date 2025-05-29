@@ -49,9 +49,10 @@
 ## Misc
 
 - [ ] Add a loader for a json file with the data scrapped from fragrantica
-- [ ] Summary of a brand by AI based on all reviews
+- [x] Summary of a brand by AI based on all reviews
+- [ ] Regenerate asking for changes
 - [ ] Separate fragrance addition from user fragrance addition
-- [ ] Add house page
+- [ ] Add house page, with summary of my experience with its fragrances
 
 ## Bugs
 
