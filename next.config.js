@@ -12,6 +12,7 @@ const config = {
       "scentlover.shop",
       "utfs.io",
       "mauriciocarbajal.com",
+      "b4k8j3lxxc.ufs.sh",
     ],
   },
 };

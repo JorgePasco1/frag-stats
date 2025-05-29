@@ -144,3 +144,19 @@ export const userFragranceLogs = createTable(
     userIdIndex: index("fragrance_log_user_id_idx").on(table.userId),
   }),
 );
+
+export const fragranceNoteSummaries = createTable(
+  "fragrance_note_summary",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    fragranceId: serial("fragrance_id").notNull(),
+    summary: text("summary").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => ({
+    userIdIndex: index("fragrance_summary_user_id_idx").on(table.userId),
+  }),
+);
