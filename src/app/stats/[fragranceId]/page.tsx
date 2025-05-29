@@ -31,7 +31,7 @@ const FragranceStatsPage = ({
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data</div>;
 
-  const { fragrance, userFragranceStats } = data;
+  const { fragrance, userFragranceStats, noteSummary } = data;
   const chartData = userFragranceStats.map((log) => ({
     date: new Date(log.logDate)
       .toLocaleDateString("en-GB", {
@@ -50,6 +50,14 @@ const FragranceStatsPage = ({
       <div className="text-2xl font-bold mb-4 text-center">
         {fragrance.house} - {fragrance.name}
       </div>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Note Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div>{noteSummary}</div>
+        </CardContent>
+      </Card>
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Enjoyment over time</CardTitle>
