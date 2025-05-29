@@ -51,13 +51,15 @@ Avoid talking about:
 - Compliments or perception of thirds (being noticed, etc.)
 - Specific places I've visit or people I've been with.
 
-Avoid being too cheesy, using phrases like "despite my concern". Separate your review in paragraphs. Have in mind the use case, but only if it's very noticeable that there's a tendency to use the fragrance in that use case.
+Avoid being too cheesy, using phrases like "despite my concern". Separate your review in paragraphs. Have in mind the use case, but only if it's very noticeable that there's a tendency to use the fragrance in that use case. Some more helpful context:
+- I apply fragrance before bed, but not bc it's the best time to wear it, so let's not mention that a fragrance is best worn at bedtime.
+- I want to focus on getting a summary of the notes I pick up, and the associations I can make to it. So that I can then write my own version. This should be more a helper than a final review.
 `;
 
   const completion = await openai.chat.completions.create({
     messages: [{ role: "user", content: prompt }],
     model: "gpt-4",
-    max_tokens: 800,
+    max_tokens: 500,
   });
 
   return completion.choices[0]?.message?.content ?? "No summary generated";

@@ -1,12 +1,7 @@
-import {
-  fragrances,
-  userFragranceLogs,
-  fragranceNoteSummaries,
-} from "~/server/db/schema";
 import { createTRPCRouter, privateProcedure } from "../../trpc";
 import { z } from "zod";
-import { and, eq, sql } from "drizzle-orm";
-import { checkRecentSummary, generateNoteSummary } from "./chatGptHelper";
+import { checkRecentSummary } from "./chatGptHelper";
+import { createNoteSummary, getFragranceDetails, getUserFragranceStats } from "./dbHelper";
 
 export const userFragranceStatsRouter = createTRPCRouter({
   getUserFragranceStats: privateProcedure
@@ -19,38 +14,8 @@ export const userFragranceStatsRouter = createTRPCRouter({
       const { currentUserId, db } = ctx;
       const { fragranceId } = input;
 
-      // Fragrance house and name
-      const fragrance = (
-        await db
-          .select({
-            house: fragrances.house,
-            name: fragrances.name,
-          })
-          .from(fragrances)
-          .where(eq(fragrances.id, fragranceId))
-          .limit(1)
-      )[0];
-      if (!fragrance) {
-        throw new Error("Fragrance not found");
-      }
-
-      const userFragranceStats = await db
-        .select({
-          enjoyment: userFragranceLogs.enjoyment,
-          logDate: userFragranceLogs.logDate,
-          notes: userFragranceLogs.notes,
-          useCase: userFragranceLogs.useCase,
-        })
-        .from(userFragranceLogs)
-        .where(
-          and(
-            eq(userFragranceLogs.userId, currentUserId),
-            eq(userFragranceLogs.fragranceId, fragranceId),
-            eq(userFragranceLogs.testedInBlotter, false),
-            sql`${userFragranceLogs.useCase} != 'guess_game'`,
-            sql`${userFragranceLogs.notes} IS NOT NULL`,
-          ),
-        );
+      const fragrance = await getFragranceDetails(db, fragranceId);
+      const userFragranceStats = await getUserFragranceStats(db, currentUserId, fragranceId);
 
       // Check for recent summary
       const existingSummary = await checkRecentSummary(
@@ -61,32 +26,12 @@ export const userFragranceStatsRouter = createTRPCRouter({
 
       // If no recent summary exists, generate a new one
       if (!existingSummary) {
-        const notes = userFragranceStats
-          .map((stat) => ({
-            notes: stat.notes ?? "",
-            useCase: stat.useCase ?? "unspecified",
-          }));
-
-
-        if (notes.length > 0) {
-          const summary = await generateNoteSummary(notes);
-
-          // Save the new summary
-          const [newSummary] = await db
-            .insert(fragranceNoteSummaries)
-            .values({
-              userId: currentUserId,
-              fragranceId,
-              summary,
-            })
-            .returning();
-
-          return {
-            fragrance,
-            userFragranceStats,
-            noteSummary: newSummary?.summary,
-          };
-        }
+        const newSummary = await createNoteSummary(db, currentUserId, fragranceId);
+        return {
+          fragrance,
+          userFragranceStats,
+          noteSummary: newSummary,
+        };
       }
 
       return {
@@ -94,5 +39,14 @@ export const userFragranceStatsRouter = createTRPCRouter({
         userFragranceStats,
         noteSummary: existingSummary?.summary,
       };
+    }),
+  regenerateNoteSummary: privateProcedure
+    .input(z.object({ fragranceId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const { currentUserId, db } = ctx;
+      const { fragranceId } = input;
+
+      const newSummary = await createNoteSummary(db, currentUserId, fragranceId);
+      return { summary: newSummary };
     }),
 });

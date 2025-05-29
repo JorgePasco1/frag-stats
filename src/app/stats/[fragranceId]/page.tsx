@@ -1,6 +1,7 @@
 "use client";
 
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -22,11 +23,11 @@ const FragranceStatsPage = ({
   params: { fragranceId: string };
 }) => {
   const { fragranceId } = params;
+  const utils = api.useUtils();
   const { data, isLoading } =
     api.userFragranceStats.getUserFragranceStats.useQuery({
       fragranceId: parseInt(fragranceId),
     });
-  console.log({ data });
 
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data</div>;
@@ -42,20 +43,35 @@ const FragranceStatsPage = ({
       .replace(/\//g, "/"),
     enjoyment: log.enjoyment,
   }));
-  console.log({ chartData });
 
+  const { mutate: regenerateSummary, isPending: isRegenerating } =
+    api.userFragranceStats.regenerateNoteSummary.useMutation({
+      onSuccess: () => {
+        void utils.userFragranceStats.getUserFragranceStats.invalidate();
+      },
+    });
 
   return (
-    <div className="w-full p-8">
-      <div className="text-2xl font-bold mb-4 text-center">
+    <div className="w-full p-8 flex flex-col gap-4">
+      <div className="text-2xl font-bold text-center">
         {fragrance.house} - {fragrance.name}
       </div>
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle>Note Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="w-full flex flex-col gap-4">
+        <CardContent className="flex flex-col gap-4 flex-1">
+          <CardHeader>
+            <CardTitle>Note Summary</CardTitle>
+          </CardHeader>
           <div className="whitespace-pre-wrap">{noteSummary}</div>
+          <div className="flex justify-end">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => regenerateSummary({ fragranceId: parseInt(fragranceId) })}
+              disabled={isRegenerating}
+            >
+              {isRegenerating ? "Regenerating..." : "Regenerate summary"}
+            </Button>
+          </div>
         </CardContent>
       </Card>
       <Card className="w-full">
