@@ -1,6 +1,5 @@
-import { eq, gte, desc } from "drizzle-orm";
-import { and } from "drizzle-orm";
-import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { eq, gte, desc, and } from "drizzle-orm";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import OpenAI from "openai";
 import { env } from "~/env";
 import type * as schema from "~/server/db/schema";
