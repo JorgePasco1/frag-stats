@@ -2,12 +2,7 @@
 
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
 import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
@@ -29,6 +24,13 @@ const FragranceStatsPage = ({
       fragranceId: parseInt(fragranceId),
     });
 
+  const { mutate: regenerateSummary, isPending: isRegenerating } =
+    api.userFragranceStats.regenerateNoteSummary.useMutation({
+      onSuccess: () => {
+        void utils.userFragranceStats.getUserFragranceStats.invalidate();
+      },
+    });
+
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data</div>;
 
@@ -44,20 +46,13 @@ const FragranceStatsPage = ({
     enjoyment: log.enjoyment,
   }));
 
-  const { mutate: regenerateSummary, isPending: isRegenerating } =
-    api.userFragranceStats.regenerateNoteSummary.useMutation({
-      onSuccess: () => {
-        void utils.userFragranceStats.getUserFragranceStats.invalidate();
-      },
-    });
-
   return (
-    <div className="w-full p-8 flex flex-col gap-4">
-      <div className="text-2xl font-bold text-center">
+    <div className="flex w-full flex-col gap-4 p-8">
+      <div className="text-center text-2xl font-bold">
         {fragrance.house} - {fragrance.name}
       </div>
-      <Card className="w-full flex flex-col gap-4">
-        <CardContent className="flex flex-col gap-4 flex-1">
+      <Card className="flex w-full flex-col gap-4">
+        <CardContent className="flex flex-1 flex-col gap-4">
           <CardHeader>
             <CardTitle>Note Summary</CardTitle>
           </CardHeader>
@@ -66,7 +61,9 @@ const FragranceStatsPage = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => regenerateSummary({ fragranceId: parseInt(fragranceId) })}
+              onClick={() =>
+                regenerateSummary({ fragranceId: parseInt(fragranceId) })
+              }
               disabled={isRegenerating}
             >
               {isRegenerating ? "Regenerating..." : "Regenerate summary"}
