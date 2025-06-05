@@ -36,10 +36,13 @@ export const checkRecentSummary = async (
 export const generateNoteSummary = async (notes: {
   notes: string;
   useCase: string;
+  fragranceName: string;
+  fragranceHouse: string;
+  enjoyment: number;
 }[]) => {
   const prompt = `Write a summary of my thoughts on a fragrance:
 
-${notes.map((note) => `${note.notes} (Use case: ${note.useCase})`).join("\n--------------------------------\n")}
+${notes.map((note) => `${note.notes} (Use case: ${note.useCase}, Fragrance name: ${note.fragranceName}, Fragrance house: ${note.fragranceHouse}, Enjoyment: ${note.enjoyment}/10)`).join("\n--------------------------------\n")}
 
 Please provide a insightful summary that captures my feels about it, and my perception and identification of notes. Speak in first person, as if you are me. Try to capture as much as possible, both positive and negative, how my perception has changed over time, etc.
 
@@ -54,6 +57,8 @@ Avoid talking about:
 Avoid being too cheesy, using phrases like "despite my concern". Separate your review in paragraphs. Have in mind the use case, but only if it's very noticeable that there's a tendency to use the fragrance in that use case. Some more helpful context:
 - I apply fragrance before bed, but not bc it's the best time to wear it, so let's not mention that a fragrance is best worn at bedtime.
 - I want to focus on getting a summary of the notes I pick up, and the associations I can make to it. So that I can then write my own version. This should be more a helper than a final review.
+- Don't try too hard to get a "timeline", if there's not much change on my perception, don't mention it.
+- Take into account the knowledge you have about the fragrance, and the notes I've picked up.
 `;
 
   const completion = await openai.chat.completions.create({
