@@ -19,8 +19,13 @@ export async function getUserFragranceStats(
       logDate: userFragranceLogs.logDate,
       notes: userFragranceLogs.notes,
       useCase: userFragranceLogs.useCase,
+      fragranceName: fragrances.name,
+      fragranceHouse: fragrances.house,
+      weather: userFragranceLogs.weather,
+      timeOfDay: userFragranceLogs.timeOfDay,
     })
     .from(userFragranceLogs)
+    .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
     .where(
       and(
         eq(userFragranceLogs.userId, currentUserId),
@@ -44,6 +49,11 @@ export async function createNoteSummary(
   const notes = userFragranceStats.map((stat) => ({
     notes: stat.notes ?? "",
     useCase: stat.useCase ?? "unspecified",
+    enjoyment: stat.enjoyment,
+    fragranceName: stat.fragranceName,
+    fragranceHouse: stat.fragranceHouse,
+    weather: stat.weather,
+    timeOfDay: stat.timeOfDay,
   }));
 
   const summary = await generateNoteSummary(notes);
