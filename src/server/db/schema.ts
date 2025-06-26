@@ -113,7 +113,8 @@ export const useCaseEnum = pgEnum("use_case", [
   "hangout",
   "personal",
   "testing",
-  "guess_game"
+  "guess_game",
+  "nature/outdoors"
 ]);
 
 export const timeOfDayEnum = pgEnum("time_of_day", ["day", "night"]);
