@@ -92,6 +92,41 @@ export const userFragranceLogsRouter = createTRPCRouter({
           eq(userFragranceLogs.userId, currentUserId)
         ));
     }),
+  getFragranceLog: privateProcedure
+    .input(z.object({ logId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const { currentUserId, db } = ctx;
+      const { logId } = input;
+
+      const log = await db
+        .select({
+          id: userFragranceLogs.id,
+          logDate: userFragranceLogs.logDate,
+          notes: userFragranceLogs.notes,
+          sprays: userFragranceLogs.sprays,
+          enjoyment: userFragranceLogs.enjoyment,
+          duration: userFragranceLogs.duration,
+          testedInBlotter: userFragranceLogs.testedInBlotter,
+          timeOfDay: userFragranceLogs.timeOfDay,
+          weather: userFragranceLogs.weather,
+          useCase: userFragranceLogs.useCase,
+          fragranceId: userFragranceLogs.fragranceId,
+          fragranceFullName: sql<string>`${fragrances.house} || ' ' || ${fragrances.name}`,
+        })
+        .from(userFragranceLogs)
+        .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
+        .where(and(
+          eq(userFragranceLogs.id, logId),
+          eq(userFragranceLogs.userId, currentUserId)
+        ))
+        .limit(1);
+
+      if (log.length === 0) {
+        throw new Error("Log not found or access denied");
+      }
+
+      return log[0];
+    }),
   getAllUserFragranceLogs: privateProcedure.query(({ ctx }) => {
     const { currentUserId, db } = ctx;
     return db
