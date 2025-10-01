@@ -33,6 +33,7 @@ export const userFragrancesRouter = createTRPCRouter({
 
       return db
         .select({
+          userFragranceId: userFragrances.id,
           fragranceId: userFragrances.fragranceId,
           name: fragrances.name,
           house: fragrances.house,
@@ -63,6 +64,7 @@ export const userFragrancesRouter = createTRPCRouter({
         )
         .groupBy(
           userFragrances.fragranceId,
+          userFragrances.id,
           fragrances.name,
           fragrances.house,
           fragrances.imageUrl,
@@ -155,7 +157,7 @@ export const userFragrancesRouter = createTRPCRouter({
   registerGone: privateProcedure
     .input(
       z.object({
-        fragranceId: z.number(),
+        userFragranceId: z.number(),
         goneDate: z
           .string()
           .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
@@ -166,7 +168,7 @@ export const userFragrancesRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { currentUserId, db } = ctx;
-      const { fragranceId, goneDate, hadDetails, wentTo, sellPrice } = input;
+      const { userFragranceId, goneDate, hadDetails, wentTo, sellPrice } = input;
       await db
         .update(userFragrances)
         .set({
@@ -179,7 +181,7 @@ export const userFragrancesRouter = createTRPCRouter({
         .where(
           and(
             eq(userFragrances.userId, currentUserId),
-            eq(userFragrances.fragranceId, fragranceId),
+            eq(userFragrances.id, userFragranceId),
           ),
         );
     }),

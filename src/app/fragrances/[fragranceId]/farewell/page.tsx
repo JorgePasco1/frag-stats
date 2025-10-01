@@ -7,14 +7,15 @@ const FragranceFarewellPage = async ({
   params: { fragranceId: string };
 }) => {
   const { fragranceId } = params;
+  const userFragranceId = parseInt(fragranceId); // This will need to be updated when URL structure changes
   const { name } =
     (await api.fragrances.getFragranceName({
-      fragranceId: parseInt(fragranceId),
+      userFragranceId: userFragranceId,
     })) ?? {};
   return (
     <div className="flex flex-col items-center gap-4 pt-4">
       <div className="text-lg">Farewell {name}</div>
-      <FarewellForm fragranceId={parseInt(fragranceId)} />
+      <FarewellForm userFragranceId={userFragranceId} />
     </div>
   );
 };

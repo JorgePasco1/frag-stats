@@ -1,8 +1,8 @@
 import { octetInputParser } from "@trpc/server/unstable-core-do-not-import";
 import { createTRPCRouter, privateProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { fragrances } from "~/server/db/schema";
-import { eq } from "drizzle-orm";
+import { fragrances, userFragrances } from "~/server/db/schema";
+import { eq, and } from "drizzle-orm";
 
 export const fragrancesRouter = createTRPCRouter({
   loadFragranceDataFromFragrantica: privateProcedure
@@ -11,21 +11,25 @@ export const fragrancesRouter = createTRPCRouter({
       console.log({ input });
       return { valid: true };
     }),
-  getFragranceName: publicProcedure
+  getFragranceName: privateProcedure
     .input(
       z.object({
-        fragranceId: z.number(),
+        userFragranceId: z.number(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { fragranceId } = input;
-      const { db } = ctx;
+      const { userFragranceId } = input;
+      const { currentUserId, db } = ctx;
       const results = await db
         .select({
           name: fragrances.name,
         })
-        .from(fragrances)
-        .where(eq(fragrances.id, fragranceId));
+        .from(userFragrances)
+        .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
+        .where(and(
+          eq(userFragrances.id, userFragranceId),
+          eq(userFragrances.userId, currentUserId)
+        ));
       if (results.length === 0) {
         throw new Error("Fragrance not found");
       }

@@ -46,7 +46,7 @@ const YourCollectionPage = async ({
             {bottles.map((fragrance) => (
               <FragranceCard
                 fragrance={fragrance}
-                key={fragrance.fragranceId}
+                key={fragrance.userFragranceId}
               />
             ))}
           </div>
@@ -55,7 +55,7 @@ const YourCollectionPage = async ({
           <div className="flex w-full flex-wrap justify-center gap-8">
             {decants.map((fragrance) => (
               <FragranceCard
-                key={fragrance.fragranceId}
+                key={fragrance.userFragranceId}
                 fragrance={fragrance}
               />
             ))}

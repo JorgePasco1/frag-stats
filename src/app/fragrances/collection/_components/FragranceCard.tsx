@@ -22,7 +22,7 @@ export const FragranceCard = ({ fragrance }: FragranceCardProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top">
         <DropdownMenuItem>
-          <Link href={`/fragrances/${fragrance.fragranceId}`}>
+          <Link href={`/fragrances/${fragrance.userFragranceId}`}>
             View details
           </Link>
         </DropdownMenuItem>
@@ -30,7 +30,7 @@ export const FragranceCard = ({ fragrance }: FragranceCardProps) => {
           <Link href={`/stats/${fragrance.fragranceId}`}>View Stats</Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href={`/fragrances/${fragrance.fragranceId}/farewell`}>
+          <Link href={`/fragrances/${fragrance.userFragranceId}/farewell`}>
             It&apos;s gone
           </Link>
         </DropdownMenuItem>

@@ -16,10 +16,10 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useSubmitFragranceFarewell } from "./hooks";
 
 type FarewellFormProps = {
-  fragranceId: number;
+  userFragranceId: number;
 };
 
-export const FarewellForm = ({ fragranceId }: FarewellFormProps) => {
+export const FarewellForm = ({ userFragranceId }: FarewellFormProps) => {
   const form = useForm<FarewellFragranceFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,7 +35,7 @@ export const FarewellForm = ({ fragranceId }: FarewellFormProps) => {
     hadDetails === "exchanged";
 
   const { onSubmit, isSubmissionLoading } =
-    useSubmitFragranceFarewell(fragranceId);
+    useSubmitFragranceFarewell(userFragranceId);
 
   return (
     <Form {...form}>

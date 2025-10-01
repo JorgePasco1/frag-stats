@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "../trpc";
-import { fragrances, timeOfDayEnum, useCaseEnum, userFragranceLogs, weatherEnum } from "~/server/db/schema";
+import { fragrances, timeOfDayEnum, useCaseEnum, userFragranceLogs, userFragrances, weatherEnum } from "~/server/db/schema";
 import { eq, sql, and } from "drizzle-orm";
 
 
@@ -112,12 +112,15 @@ export const userFragranceLogsRouter = createTRPCRouter({
           useCase: userFragranceLogs.useCase,
           fragranceId: userFragranceLogs.fragranceId,
           fragranceFullName: sql<string>`${fragrances.house} || ' ' || ${fragrances.name}`,
+          userFragranceId: sql<number>`${userFragrances.id}`,
         })
         .from(userFragranceLogs)
         .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
+        .innerJoin(userFragrances, eq(userFragranceLogs.fragranceId, userFragrances.fragranceId))
         .where(and(
           eq(userFragranceLogs.id, logId),
-          eq(userFragranceLogs.userId, currentUserId)
+          eq(userFragranceLogs.userId, currentUserId),
+          eq(userFragrances.userId, currentUserId)
         ))
         .limit(1);
 
@@ -134,9 +137,14 @@ export const userFragranceLogsRouter = createTRPCRouter({
         id: userFragranceLogs.id,
         logDate: userFragranceLogs.logDate,
         fragranceFullName: sql<string>`${fragrances.house} || ' ' || ${fragrances.name}`,
+        userFragranceId: sql<number>`${userFragrances.id}`,
       })
       .from(userFragranceLogs)
       .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
-      .where(eq(userFragranceLogs.userId, currentUserId));
+      .innerJoin(userFragrances, eq(userFragranceLogs.fragranceId, userFragrances.fragranceId))
+      .where(and(
+        eq(userFragranceLogs.userId, currentUserId),
+        eq(userFragrances.userId, currentUserId)
+      ));
   }),
 });
