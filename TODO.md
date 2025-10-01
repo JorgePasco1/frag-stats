@@ -45,6 +45,7 @@
   - [ ] ratings
   - [ ] longest since last use
 - [ ] Add bottle size to collection (bottles and decants)
+- [ ] Add check for existing fragrance when adding
 
 ## Misc
 
