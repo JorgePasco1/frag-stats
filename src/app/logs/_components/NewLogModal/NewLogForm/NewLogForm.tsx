@@ -3,17 +3,18 @@ import { Form } from "~/components/ui/form";
 import { api } from "~/trpc/react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Checkbox } from "~/components/ui/checkbox";
-import { FragranceSelect } from "./inputs";
-import { EnjoymentRating } from "./inputs/EnjoymentRating";
-import { SpraysInput } from "./inputs/SpraysInput";
-import { NotesInput } from "./inputs/NotesInput";
+import {
+  BlotterCheckbox,
+  DurationInput,
+  EnjoymentRating,
+  FragranceSelect,
+  IsGoneCheckbox,
+  NotesInput,
+  SpraysInput,
+  UseCaseSelect,
+  WeatherSelect,
+} from "./inputs";
 import { Button } from "~/components/ui/button";
-
-import { DurationInput } from "./inputs/DurationInput";
-import { BlotterCheckbox } from "./inputs/BlotterCheckbox";
-
-import { UseCaseSelect } from "./inputs/UseCaseSelect";
-import { WeatherSelect } from "./inputs/WeatherSelect";
 
 import { useNewLogFormValues } from "./hooks";
 import { useNewLogFormSubmission } from "./hooks/useNewLogFormSubmission";
@@ -93,6 +94,7 @@ export const NewLogForm = ({
           </>
         )}
         <NotesInput form={form} />
+        <IsGoneCheckbox form={form} />
         <Button type="submit">
           {isSubmissionLoading && (
             <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />

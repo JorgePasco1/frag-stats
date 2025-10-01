@@ -40,6 +40,7 @@ export const useNewLogFormValues = (
 
 const formSchema = z.object({
   fragranceId: z.number(),
+  userFragranceId: z.number(),
   logDate: z.date(),
   enjoyment: z.number().int().min(1).max(10).optional(),
   sprays: z.number().int().min(1).optional(),
@@ -49,6 +50,7 @@ const formSchema = z.object({
   timeOfDay: z.enum(timeOfDayEnum.enumValues).optional(),
   weather: z.enum(weatherEnum.enumValues).optional(),
   useCase: z.enum(useCaseEnum.enumValues).optional(),
+  isGone: z.boolean().optional(),
 });
 
 export type AddFragranceLogFormValues = z.infer<typeof formSchema>;

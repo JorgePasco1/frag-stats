@@ -40,13 +40,19 @@ export const FragranceSelect = ({
   return (
     <FormField
       control={form.control}
-      name="fragranceId"
+      name="userFragranceId"
       render={({ field }) => (
         <FormItem>
           <FormLabel>Fragrance</FormLabel>
           <Select
             onValueChange={(value) => {
-              field.onChange(+value);
+              const selectedFragrance = fragranceOptions?.find(
+                (frag) => frag.userFragranceId === +value
+              );
+              if (selectedFragrance) {
+                field.onChange(+value);
+                form.setValue("fragranceId", selectedFragrance.fragranceId);
+              }
             }}
             defaultValue={String(field.value)}
           >
@@ -59,8 +65,8 @@ export const FragranceSelect = ({
               {fragranceOptions?.map((frag) => {
                 return (
                   <SelectItem
-                    key={frag.fragranceId}
-                    value={String(frag.fragranceId)}
+                    key={frag.userFragranceId}
+                    value={String(frag.userFragranceId)}
                   >
                     {frag.house} {frag.name}
                   </SelectItem>

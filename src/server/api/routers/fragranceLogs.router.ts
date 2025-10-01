@@ -1,14 +1,21 @@
 import { z } from "zod";
 import { createTRPCRouter, privateProcedure } from "../trpc";
-import { fragrances, timeOfDayEnum, useCaseEnum, userFragranceLogs, userFragrances, weatherEnum } from "~/server/db/schema";
+import {
+  fragrances,
+  timeOfDayEnum,
+  useCaseEnum,
+  userFragranceLogs,
+  userFragrances,
+  weatherEnum,
+} from "~/server/db/schema";
 import { eq, sql, and } from "drizzle-orm";
-
 
 export const userFragranceLogsRouter = createTRPCRouter({
   createUserFragranceLog: privateProcedure
     .input(
       z.object({
         fragranceId: z.number(),
+        userFragranceId: z.number(),
         logDate: z.string(),
         notes: z.string().optional(),
         sprays: z.number().int().min(1).optional(),
@@ -18,12 +25,14 @@ export const userFragranceLogsRouter = createTRPCRouter({
         timeOfDay: z.enum(timeOfDayEnum.enumValues).optional(),
         weather: z.enum(weatherEnum.enumValues).optional(),
         useCase: z.enum(useCaseEnum.enumValues).optional(),
+        isGone: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { currentUserId } = ctx;
+      const { currentUserId, db } = ctx;
       const {
         fragranceId,
+        userFragranceId,
         logDate,
         notes,
         sprays,
@@ -33,8 +42,12 @@ export const userFragranceLogsRouter = createTRPCRouter({
         timeOfDay,
         weather,
         useCase,
+        isGone,
       } = input;
-      return await ctx.db.insert(userFragranceLogs).values({
+      console.log({ isGone });
+
+      // Create the log entry
+      const logResult = await db.insert(userFragranceLogs).values({
         userId: currentUserId,
         fragranceId,
         logDate,
@@ -47,6 +60,22 @@ export const userFragranceLogsRouter = createTRPCRouter({
         weather,
         useCase,
       });
+
+      // If isGone is true, update the userFragrance status
+      if (isGone) {
+        await db
+          .update(userFragrances)
+          .set({
+            status: "had",
+            goneDate: logDate,
+            hadDetails: "emptied",
+            wentTo: null,
+            sellPrice: null,
+          })
+          .where(eq(userFragrances.id, userFragranceId));
+      }
+
+      return logResult;
     }),
   updateUserFragranceLog: privateProcedure
     .input(
@@ -73,10 +102,12 @@ export const userFragranceLogsRouter = createTRPCRouter({
       const existingLog = await db
         .select()
         .from(userFragranceLogs)
-        .where(and(
-          eq(userFragranceLogs.id, logId),
-          eq(userFragranceLogs.userId, currentUserId)
-        ))
+        .where(
+          and(
+            eq(userFragranceLogs.id, logId),
+            eq(userFragranceLogs.userId, currentUserId),
+          ),
+        )
         .limit(1);
 
       if (existingLog.length === 0) {
@@ -87,10 +118,12 @@ export const userFragranceLogsRouter = createTRPCRouter({
       return await db
         .update(userFragranceLogs)
         .set(updateValues)
-        .where(and(
-          eq(userFragranceLogs.id, logId),
-          eq(userFragranceLogs.userId, currentUserId)
-        ));
+        .where(
+          and(
+            eq(userFragranceLogs.id, logId),
+            eq(userFragranceLogs.userId, currentUserId),
+          ),
+        );
     }),
   getFragranceLog: privateProcedure
     .input(z.object({ logId: z.number() }))
@@ -116,12 +149,17 @@ export const userFragranceLogsRouter = createTRPCRouter({
         })
         .from(userFragranceLogs)
         .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
-        .innerJoin(userFragrances, eq(userFragranceLogs.fragranceId, userFragrances.fragranceId))
-        .where(and(
-          eq(userFragranceLogs.id, logId),
-          eq(userFragranceLogs.userId, currentUserId),
-          eq(userFragrances.userId, currentUserId)
-        ))
+        .innerJoin(
+          userFragrances,
+          eq(userFragranceLogs.fragranceId, userFragrances.fragranceId),
+        )
+        .where(
+          and(
+            eq(userFragranceLogs.id, logId),
+            eq(userFragranceLogs.userId, currentUserId),
+            eq(userFragrances.userId, currentUserId),
+          ),
+        )
         .limit(1);
 
       if (log.length === 0) {
@@ -141,10 +179,15 @@ export const userFragranceLogsRouter = createTRPCRouter({
       })
       .from(userFragranceLogs)
       .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
-      .innerJoin(userFragrances, eq(userFragranceLogs.fragranceId, userFragrances.fragranceId))
-      .where(and(
-        eq(userFragranceLogs.userId, currentUserId),
-        eq(userFragrances.userId, currentUserId)
-      ));
+      .innerJoin(
+        userFragrances,
+        eq(userFragranceLogs.fragranceId, userFragrances.fragranceId),
+      )
+      .where(
+        and(
+          eq(userFragranceLogs.userId, currentUserId),
+          eq(userFragrances.userId, currentUserId),
+        ),
+      );
   }),
 });
