@@ -127,6 +127,7 @@ export const userFragranceLogs = createTable(
     id: serial("id").primaryKey(),
     userId: varchar("user_id", { length: 256 }).notNull(),
     fragranceId: serial("fragrance_id").notNull(),
+    userFragranceId: integer("user_fragrance_id").references(() => userFragrances.id),
     logDate: date("log_date")
       .notNull()
       .default(sql`CURRENT_DATE`),
