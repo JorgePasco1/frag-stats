@@ -29,13 +29,29 @@ export const FragranceSelect = ({
   userFragrances,
   isDecant,
 }: FragranceSelectorProps) => {
-  const fragranceOptions = useMemo(() => {
+  const rawFragranceOptions = useMemo(() => {
     if (!userFragrances) return [];
     if (isDecant) {
       return userFragrances.filter((frag) => frag.isDecant);
     }
     return userFragrances.filter((frag) => !frag.isDecant);
   }, [userFragrances, isDecant]);
+
+  const fragranceOptions = useMemo(() => {
+    const seenFragrances = new Set<number>();
+    return rawFragranceOptions.map((frag) => {
+      // Append the capacity to the name if it's a duplicate
+      const label =
+        seenFragrances.has(frag.fragranceId)
+          ? `${frag.house} ${frag.name} (${frag.capacity} ml)`
+          : `${frag.house} ${frag.name}`;
+      seenFragrances.add(frag.fragranceId);
+      return {
+        ...frag,
+        label,
+      };
+    });
+  }, [rawFragranceOptions]);
 
   return (
     <FormField
@@ -47,7 +63,7 @@ export const FragranceSelect = ({
           <Select
             onValueChange={(value) => {
               const selectedFragrance = fragranceOptions?.find(
-                (frag) => frag.userFragranceId === +value
+                (frag) => frag.userFragranceId === +value,
               );
               if (selectedFragrance) {
                 field.onChange(+value);
@@ -68,7 +84,7 @@ export const FragranceSelect = ({
                     key={frag.userFragranceId}
                     value={String(frag.userFragranceId)}
                   >
-                    {frag.house} {frag.name}
+                    {frag.label}
                   </SelectItem>
                 );
               })}

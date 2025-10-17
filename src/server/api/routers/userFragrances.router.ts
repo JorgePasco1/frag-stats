@@ -85,6 +85,7 @@ export const userFragrancesRouter = createTRPCRouter({
         fragranceId: fragrances.id,
         isDecant: userFragrances.isDecant,
         userFragranceId: userFragrances.id,
+        capacity: userFragrances.sizeInMl,
       })
       .from(userFragrances)
       .innerJoin(fragrances, eq(userFragrances.fragranceId, fragrances.id))
