@@ -25,7 +25,17 @@ export const userFragrancesRouter = createTRPCRouter({
         if (orderBy === "name")
           return sql`${fragrances.house} ASC, ${fragrances.name} ASC`;
         if (orderBy === "rating")
-          return sql`AVG(${userFragranceLogs.enjoyment}) DESC NULLS LAST`;
+          return sql`(
+            SELECT CAST(AVG(enjoyment) AS FLOAT)
+            FROM (
+              SELECT enjoyment
+              FROM ${userFragranceLogs}
+              WHERE ${userFragranceLogs.fragranceId} = ${userFragrances.fragranceId}
+                AND ${userFragranceLogs.userId} = ${currentUserId}
+              ORDER BY ${userFragranceLogs.logDate} DESC, ${userFragranceLogs.id} DESC
+              LIMIT 10
+            ) AS last_10_logs
+          ) DESC NULLS LAST`;
         if (orderBy === "lastUsed")
           return sql`MAX(${userFragranceLogs.logDate}) ASC`;
         return sql`${fragrances.house} ASC, ${fragrances.name} ASC`;
@@ -44,7 +54,17 @@ export const userFragrancesRouter = createTRPCRouter({
           status: userFragrances.status,
           averageRating: sql<
             number | null
-          >`CAST(AVG(${userFragranceLogs.enjoyment}) AS FLOAT)`,
+          >`(
+            SELECT CAST(AVG(enjoyment) AS FLOAT)
+            FROM (
+              SELECT enjoyment
+              FROM ${userFragranceLogs}
+              WHERE ${userFragranceLogs.fragranceId} = ${userFragrances.fragranceId}
+                AND ${userFragranceLogs.userId} = ${currentUserId}
+              ORDER BY ${userFragranceLogs.logDate} DESC, ${userFragranceLogs.id} DESC
+              LIMIT 10
+            ) AS last_10_logs
+          )`,
           lastUsed: sql<string>`MAX(${userFragranceLogs.logDate})`,
         })
         .from(userFragrances)

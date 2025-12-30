@@ -3,7 +3,7 @@ import {
   userFragranceLogs,
   fragranceNoteSummaries,
 } from "~/server/db/schema";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, sql, desc, inArray } from "drizzle-orm";
 import {  generateNoteSummary } from "./chatGptHelper";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type * as schema from "~/server/db/schema";
@@ -13,6 +13,27 @@ export async function getUserFragranceStats(
   currentUserId: string,
   fragranceId: number,
 ) {
+  // First, get the IDs of the 20 most recent entries
+  const recentLogIds = await db
+    .select({ id: userFragranceLogs.id })
+    .from(userFragranceLogs)
+    .where(
+      and(
+        eq(userFragranceLogs.userId, currentUserId),
+        eq(userFragranceLogs.fragranceId, fragranceId),
+        eq(userFragranceLogs.testedInBlotter, false),
+        sql`${userFragranceLogs.useCase} != 'guess_game'`,
+      ),
+    )
+    .orderBy(desc(userFragranceLogs.logDate))
+    .limit(20);
+
+  // If no logs found, return empty array
+  if (recentLogIds.length === 0) {
+    return [];
+  }
+
+  // Then, get the full details of those entries, sorted from oldest to most recent
   return db
     .select({
       enjoyment: userFragranceLogs.enjoyment,
@@ -27,14 +48,12 @@ export async function getUserFragranceStats(
     .from(userFragranceLogs)
     .innerJoin(fragrances, eq(userFragranceLogs.fragranceId, fragrances.id))
     .where(
-      and(
-        eq(userFragranceLogs.userId, currentUserId),
-        eq(userFragranceLogs.fragranceId, fragranceId),
-        eq(userFragranceLogs.testedInBlotter, false),
-        sql`${userFragranceLogs.useCase} != 'guess_game'`,
-        sql`${userFragranceLogs.notes} IS NOT NULL`,
+      inArray(
+        userFragranceLogs.id,
+        recentLogIds.map((log) => log.id),
       ),
-    );
+    )
+    .orderBy(userFragranceLogs.logDate);
 }
 
 export async function createNoteSummary(

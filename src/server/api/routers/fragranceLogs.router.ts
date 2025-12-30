@@ -183,6 +183,11 @@ export const userFragranceLogsRouter = createTRPCRouter({
         userFragrances,
         eq(userFragranceLogs.userFragranceId, userFragrances.id),
       )
-      .where(eq(userFragranceLogs.userId, currentUserId));
+      .where(
+        and(
+          eq(userFragranceLogs.userId, currentUserId),
+          sql`${userFragranceLogs.logDate} >= CURRENT_DATE - INTERVAL '1 month'`,
+        ),
+      );
   }),
 });
