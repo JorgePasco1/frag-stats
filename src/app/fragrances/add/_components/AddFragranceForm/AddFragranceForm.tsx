@@ -115,7 +115,7 @@ export const AddFragranceForm = () => {
         />
         <Button type="submit" disabled={isPending}>
           {isPending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-          Submit
+          {isPending ? "Saving..." : "Save"}
         </Button>
       </form>
     </Form>
