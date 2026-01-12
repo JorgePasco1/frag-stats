@@ -1,0 +1,33 @@
+{
+	"hooks": {
+		"SessionStart": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "(mkdir -p \"$CLAUDE_PROJECT_DIR\"/docs/plans/ && rsync -av ~/.claude/plans/ \"$CLAUDE_PROJECT_DIR\"/docs/plans/) 2>/dev/null || true"
+					}
+				]
+			}
+		],
+		"SessionEnd": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "(mkdir -p \"$CLAUDE_PROJECT_DIR\"/docs/plans/ && rsync -av ~/.claude/plans/ \"$CLAUDE_PROJECT_DIR\"/docs/plans/) 2>/dev/null || true"
+					}
+				]
+			}
+		]
+	},
+	"mcpServers": {
+		"greptile": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@greptile/mcp-server"
+			]
+		}
+	}
+}

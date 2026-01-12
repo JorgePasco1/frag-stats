@@ -10,6 +10,7 @@ export const NavBar = () => {
         <Link href="/fragrances/add">New Fragrance</Link>
         <Link href="/fragrances/collection">Collection</Link>
         <Link href="/logs">Logs</Link>
+        <Link href="/stats">Stats</Link>
       </div>
       <div>
         <SignedOut>
