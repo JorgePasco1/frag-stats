@@ -27,7 +27,6 @@ export const FarewellForm = ({ userFragranceId }: FarewellFormProps) => {
       hadDetails: "emptied",
     },
   });
-  console.log({error: form.formState.errors});
   const hadDetails = form.watch("hadDetails");
   const wentToSomeone =
     hadDetails === "sold" ||
@@ -52,11 +51,11 @@ export const FarewellForm = ({ userFragranceId }: FarewellFormProps) => {
         />
         {wentToSomeone && <WentToInput form={form} />}
         {hadDetails === "sold" && <SellPriceInput form={form} />}
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmissionLoading}>
           {isSubmissionLoading && (
             <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
           )}
-          Save
+          {isSubmissionLoading ? "Saving..." : "Save"}
         </Button>
       </form>
     </Form>

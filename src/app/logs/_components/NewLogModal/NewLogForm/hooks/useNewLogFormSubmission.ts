@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { getDateStringFromDate } from "~/lib/dateHelper";
 import { api } from "~/trpc/react";
@@ -12,8 +13,14 @@ export const useNewLogFormSubmission = (
   const { mutate: createUserFragranceLog, isPending: isSubmissionLoading } =
     api.userFragranceLogs.createUserFragranceLog.useMutation({
       onSuccess: () => {
+        toast.success("Log created successfully");
         closeModal();
         router.refresh();
+      },
+      onError: (error) => {
+        toast.error("Failed to create log", {
+          description: error.message || "Please try again.",
+        });
       },
     });
 

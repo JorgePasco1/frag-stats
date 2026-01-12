@@ -12,6 +12,7 @@ import {
 } from "@clerk/nextjs";
 import { NavBar } from "./_components/NavBar";
 import { ThemeProvider } from "~/components/theme-provider";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Frag Stats",
@@ -36,6 +37,7 @@ export default function RootLayout({
                 </SignedOut>
                 <SignedIn>{children}</SignedIn>
               </div>
+              <Toaster richColors position="top-right" />
             </ThemeProvider>
           </TRPCReactProvider>
         </body>

@@ -4,6 +4,7 @@ import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner";
 
 import {
   Form,
@@ -32,7 +33,13 @@ export const AddFragranceForm = () => {
   const { mutate: submitForm, isPending } =
     api.userFragrances.create.useMutation({
       onSuccess: () => {
+        toast.success("Fragrance added to your collection");
         router.push("/fragrances/collection");
+      },
+      onError: (error) => {
+        toast.error("Failed to add fragrance", {
+          description: error.message || "Please try again.",
+        });
       },
     });
   const onSubmit = (values: AddFragranceFormValues) => {
@@ -108,7 +115,7 @@ export const AddFragranceForm = () => {
         />
         <Button type="submit" disabled={isPending}>
           {isPending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
-          Submit
+          {isPending ? "Saving..." : "Save"}
         </Button>
       </form>
     </Form>
