@@ -15,6 +15,7 @@ import {
   WeatherSelect,
 } from "./inputs";
 import { Button } from "~/components/ui/button";
+import { Skeleton } from "~/components/ui/skeleton";
 
 import { useNewLogFormValues } from "./hooks";
 import { useNewLogFormSubmission } from "./hooks/useNewLogFormSubmission";
@@ -45,7 +46,21 @@ export const NewLogForm = ({
     api.userFragrances.getLogOptions.useQuery();
 
   if (isLoading) {
-    return <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />;
+    return (
+      <div className="flex flex-col gap-4 p-4">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-4 w-4" />
+          <Skeleton className="h-4 w-20" />
+        </div>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="space-y-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        ))}
+        <Skeleton className="h-10 w-full" />
+      </div>
+    );
   }
   return (
     <Form {...form}>
@@ -95,11 +110,11 @@ export const NewLogForm = ({
         )}
         <NotesInput form={form} />
         <IsGoneCheckbox form={form} />
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmissionLoading}>
           {isSubmissionLoading && (
             <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
           )}
-          Save
+          {isSubmissionLoading ? "Saving..." : "Save"}
         </Button>
       </form>
     </Form>
