@@ -2,7 +2,7 @@
 
 import { ErrorDisplay } from "~/components/ErrorDisplay";
 
-export default function GlobalError({
+export default function Error({
   error,
   reset,
 }: {
