@@ -5,7 +5,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "cd \"$CLAUDE_PROJECT_DIR\" && mkdir -p docs/plans/ && git ls-files docs/plans/*.md 2>/dev/null | while read -r file; do filename=$(basename \"$file\"); [ -f ~/.claude/plans/\"$filename\" ] && cp ~/.claude/plans/\"$filename\" \"$file\"; done || true"
+						"command": "cd \"$CLAUDE_PROJECT_DIR\" && mkdir -p docs/plans/ ~/.claude/plans/frag-stats/ && (cp ~/.claude/plans/frag-stats/*.md docs/plans/ 2>/dev/null || true)"
 					}
 				]
 			}
@@ -15,7 +15,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "cd \"$CLAUDE_PROJECT_DIR\" && mkdir -p ~/.claude/plans/ && git ls-files docs/plans/*.md 2>/dev/null | while read -r file; do filename=$(basename \"$file\"); cp \"$file\" ~/.claude/plans/\"$filename\"; done || true"
+						"command": "cd \"$CLAUDE_PROJECT_DIR\" && mkdir -p ~/.claude/plans/frag-stats/ && (cp docs/plans/*.md ~/.claude/plans/frag-stats/ 2>/dev/null || true)"
 					}
 				]
 			}
