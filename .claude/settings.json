@@ -5,7 +5,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "(mkdir -p \"$CLAUDE_PROJECT_DIR\"/docs/plans/ && rsync -av ~/.claude/plans/ \"$CLAUDE_PROJECT_DIR\"/docs/plans/) 2>/dev/null || true"
+						"command": "cd \"$CLAUDE_PROJECT_DIR\" && mkdir -p docs/plans/ ~/.claude/plans/frag-stats/ && (cp ~/.claude/plans/frag-stats/*.md docs/plans/ 2>/dev/null || true)"
 					}
 				]
 			}
@@ -15,7 +15,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "(mkdir -p \"$CLAUDE_PROJECT_DIR\"/docs/plans/ && rsync -av ~/.claude/plans/ \"$CLAUDE_PROJECT_DIR\"/docs/plans/) 2>/dev/null || true"
+						"command": "cd \"$CLAUDE_PROJECT_DIR\" && mkdir -p ~/.claude/plans/frag-stats/ && (cp docs/plans/*.md ~/.claude/plans/frag-stats/ 2>/dev/null || true)"
 					}
 				]
 			}
