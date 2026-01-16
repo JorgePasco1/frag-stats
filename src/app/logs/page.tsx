@@ -1,5 +1,6 @@
 import { api } from "~/trpc/server";
 import { NewLogModal } from "./_components/NewLogModal";
+import { BulkImportModal } from "./_components/BulkImportModal";
 import { groupLogsByDate } from "./_lib/groupHelper";
 import { LogGroup } from "./_components/LogGroup";
 
@@ -14,7 +15,10 @@ const LogsIndex = async () => {
   return (
     <div className="flex flex-col items-center gap-4 pb-4 pt-4">
       <h1 className="text-xl font-bold">Logs</h1>
-      <NewLogModal />
+      <div className="flex gap-2">
+        <NewLogModal />
+        <BulkImportModal />
+      </div>
       {sortedLogGroups.map(([date, logs], idx) => (
         <LogGroup
           date={date}
